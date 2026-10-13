@@ -28,7 +28,7 @@ const REDES = [
   },
 ];
 
-export default function Footer() {
+export default function Footer({ mostrarLlamado = true }: { mostrarLlamado?: boolean }) {
   return (
     <footer className="relative w-full overflow-hidden border-t border-[#f5c542]/30 bg-[#02152b] px-5 pt-[80px] pb-8 font-poppins text-white">
       {/* Destellos de color bajos */}
@@ -36,42 +36,49 @@ export default function Footer() {
       <div className="pointer-events-none absolute -right-20 bottom-0 h-96 w-96 rounded-full bg-[#0054ef]/20 blur-3xl" />
 
       <div className="relative z-10 mx-auto max-w-[1400px]">
-        {/* Llamado principal */}
-        <Reveal>
-          <div className="mx-auto max-w-3xl text-center">
-            <h2 className="font-krona text-2xl uppercase leading-tight tracking-wide text-white! md:text-3xl">
-              ¡Haz que tus recuerdos sean{" "}
-              <span className="text-[#f5c542]">inolvidables</span>!
-            </h2>
 
-            <p className="mt-5 text-base leading-relaxed text-white/70 md:text-lg">
-              Sorprende a tus invitados con una experiencia fotográfica
-              diferente. Consulta nuestra disponibilidad y reserva tu fecha.
-            </p>
+                {/* Llamado principal (se puede ocultar con mostrarLlamado={false}) */}
+        {mostrarLlamado && (
+          <>
+            <Reveal>
+              <div className="mx-auto max-w-3xl text-center">
+                <h2 className="font-krona text-2xl uppercase leading-tight tracking-wide text-white! md:text-3xl">
+                  ¡Haz que tus recuerdos sean{" "}
+                  <span className="text-[#f5c542]">inolvidables</span>!
+                </h2>
 
-            <a
-              href={WA_LINK}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="
-                mt-8 inline-flex items-center gap-3 rounded-full
-                bg-[#f5c542] px-8 py-4 font-semibold text-[#02152b]
-                shadow-lg shadow-[#f5c542]/20
-                transition-all duration-300
-                hover:scale-105 hover:bg-[#ffe9a8]
-              "
-            >
-              <i
-                className="fa-brands fa-whatsapp text-2xl"
-                aria-hidden="true"
-              />
-              <span>Contáctanos por WhatsApp</span>
-            </a>
-          </div>
-        </Reveal>
+                <p className="mt-5 text-base leading-relaxed text-white/70 md:text-lg">
+                  Sorprende a tus invitados con una experiencia fotográfica
+                  diferente. Consulta nuestra disponibilidad y reserva tu fecha.
+                </p>
 
-        {/* Separador */}
-        <hr className="my-12 border-t border-white/15" />
+                <a
+                  href={WA_LINK}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="
+                    mt-8 inline-flex items-center gap-3 rounded-full
+                    bg-[#f5c542] px-8 py-4 font-semibold text-[#02152b]
+                    shadow-lg shadow-[#f5c542]/20
+                    transition-all duration-300
+                    hover:scale-105 hover:bg-[#ffe9a8]
+                  "
+                >
+                  <i
+                    className="fa-brands fa-whatsapp text-2xl"
+                    aria-hidden="true"
+                  />
+                  <span>Contáctanos por WhatsApp</span>
+                </a>
+              </div>
+            </Reveal>
+
+            {/* Separador */}
+            <hr className="my-12 border-t border-white/15" />
+          </>
+        )}
+
+        
 
         {/* Columnas (entran una tras otra) */}
         <div className="grid grid-cols-1 gap-10 text-left sm:grid-cols-2 lg:grid-cols-[2fr_1fr_1.3fr_1fr]">

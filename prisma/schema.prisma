@@ -1,0 +1,188 @@
+// Modelo de datos del MVP de reservas · Miranda Magic Mirror
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL") // conexión con pooling (la usa la app)
+  directUrl = env("DIRECT_URL")   // conexión directa (la usan las migraciones)
+}
+
+// ---------- Enums ----------
+
+enum TipoProducto {
+  ALQUILER // usa unidades físicas (espejos)
+  SERVICIO // a futuro: no usa unidades
+}
+
+enum EstadoUnidad {
+  OPERATIVA
+  MANTENIMIENTO
+  BAJA
+}
+
+enum EstadoReserva {
+  PENDIENTE
+  CONFIRMADA
+  EN_CURSO
+  FINALIZADA
+  CANCELADA
+}
+
+enum CanalPago {
+  WHATSAPP
+  YAPE_PLIN
+  TRANSFERENCIA
+}
+
+enum MetodoPago {
+  YAPE
+  PLIN
+  TRANSFERENCIA
+  EFECTIVO
+}
+
+enum OrigenPago {
+  WEB      // el cliente subió la captura en la web
+  WHATSAPP // la mandó por chat y el admin la registró
+  ADMIN    // pago registrado a mano (ej. saldo en efectivo)
+}
+
+enum EstadoPago {
+  POR_VERIFICAR
+  VERIFICADO
+  RECHAZADO
+}
+
+enum Rol {
+  ADMIN
+  OPERADOR
+}
+
+// ---------- Inventario ----------
+
+model Categoria {
+  id        Int        @id @default(autoincrement())
+  nombre    String
+  slug      String     @unique
+  orden     Int        @default(0)
+  activa    Boolean    @default(true)
+  productos Producto[]
+}
+
+model Producto {
+  id          Int           @id @default(autoincrement())
+  categoria   Categoria     @relation(fields: [categoriaId], references: [id])
+  categoriaId Int
+  tipo        TipoProducto  @default(ALQUILER)
+  nombre      String
+  slug        String        @unique
+  descripcion String?
+  precio      Decimal       @db.Decimal(10, 2)
+  imagen      String?
+  activo      Boolean       @default(true)
+  unidades    Unidad[]
+  items       ReservaItem[]
+
+  @@index([categoriaId])
+}
+
+model Unidad {
+  id           Int          @id @default(autoincrement())
+  producto     Producto     @relation(fields: [productoId], references: [id])
+  productoId   Int
+  codigo       String       @unique // ESP-001
+  estado       EstadoUnidad @default(OPERATIVA)
+  notas        String?
+  asignaciones Asignacion[]
+
+  @@index([productoId])
+}
+
+// ---------- Clientes y reservas ----------
+
+model Cliente {
+  id       Int       @id @default(autoincrement())
+  nombre   String
+  celular  String    @unique // obligatorio: es como se identifica al cliente
+  email    String?
+  reservas Reserva[]
+}
+
+model Reserva {
+  id          Int           @id @default(autoincrement())
+  codigo      String        @unique // R-2026-0142
+  tokenAcceso String        @unique // link seguro /reserva/[codigo]?t=...
+  cliente     Cliente       @relation(fields: [clienteId], references: [id])
+  clienteId   Int
+  fechaInicio DateTime      @db.Date // incluye montaje
+  fechaFin    DateTime      @db.Date // incluye recojo
+  horario     String?
+  distrito    String?
+  direccion   String?
+  tipoEvento  String?
+  estado      EstadoReserva @default(PENDIENTE)
+  canalPago   CanalPago?
+  total       Decimal       @db.Decimal(10, 2)
+  adelanto    Decimal       @db.Decimal(10, 2)
+  expiraEn    DateTime? // vence si no paga (24 h)
+  notas       String?
+  creadoEn    DateTime      @default(now())
+  items       ReservaItem[]
+  pagos       Pago[]
+
+  @@index([estado, fechaInicio, fechaFin])
+  @@index([clienteId])
+}
+
+model ReservaItem {
+  id             Int          @id @default(autoincrement())
+  reserva        Reserva      @relation(fields: [reservaId], references: [id], onDelete: Cascade)
+  reservaId      Int
+  producto       Producto     @relation(fields: [productoId], references: [id])
+  productoId     Int
+  cantidad       Int          @default(1)
+  precioUnitario Decimal      @db.Decimal(10, 2)
+  asignaciones   Asignacion[]
+
+  @@index([reservaId])
+  @@index([productoId])
+}
+
+model Asignacion {
+  id            Int         @id @default(autoincrement())
+  reservaItem   ReservaItem @relation(fields: [reservaItemId], references: [id], onDelete: Cascade)
+  reservaItemId Int
+  unidad        Unidad      @relation(fields: [unidadId], references: [id])
+  unidadId      Int
+
+  @@unique([reservaItemId, unidadId])
+  @@index([unidadId])
+}
+
+model Pago {
+  id              Int        @id @default(autoincrement())
+  reserva         Reserva    @relation(fields: [reservaId], references: [id], onDelete: Cascade)
+  reservaId       Int
+  monto           Decimal    @db.Decimal(10, 2)
+  metodo          MetodoPago
+  origen          OrigenPago @default(WEB)
+  numeroOperacion String?    @unique // evita reutilizar capturas
+  comprobanteUrl  String?
+  estado          EstadoPago @default(POR_VERIFICAR)
+  creadoEn        DateTime   @default(now())
+
+  @@index([reservaId])
+}
+
+// ---------- Admin ----------
+
+model Usuario {
+  id           Int    @id @default(autoincrement())
+  nombre       String
+  email        String @unique
+  passwordHash String
+  rol          Rol    @default(ADMIN)
+}

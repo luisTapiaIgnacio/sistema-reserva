@@ -130,3 +130,9 @@ h3 {
     display: none;
   }
 }
+
+/* Destello que cruza el botón Reserva */
+@keyframes destello {
+  0% { transform: translateX(-150%) skewX(-20deg); }
+  60%, 100% { transform: translateX(350%) skewX(-20deg); }
+}

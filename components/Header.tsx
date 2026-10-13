@@ -217,28 +217,38 @@ export default function Header() {
             </ul>
           </nav>
 
-          {/* Botón Suscríbete */}
+          {/* Botón agenda/reserva */}
+         
+          {/* Botón agenda/reserva */}
           <Link
-            href="/suscribete"
+            href="/reservar"
             className="
-              group shrink-0 inline-flex items-center gap-2
+              group relative shrink-0 inline-flex items-center gap-2 overflow-hidden
               rounded-full px-6 py-2.5
-              bg-primary-light
-              font-poppins text-sm font-bold text-white
-              shadow-lg shadow-primary-glow/30
-              transition-all duration-300
-              hover:scale-105 hover:shadow-primary-glow/50
-              focus:outline-none focus:ring-2 focus:ring-primary-glow/50 focus:ring-offset-2 focus:ring-offset-primary
+              bg-[linear-gradient(110deg,#c47f0a,#f5c542,#ffe9a8,#f5c542,#c47f0a)]
+              bg-[length:200%_100%] bg-[position:0%_0] hover:bg-[position:100%_0]
+              font-poppins text-sm font-bold text-[#02152b]
+              shadow-[0_0_18px_rgba(245,197,66,0.35)]
+              transition-all duration-500
+              hover:scale-105 hover:shadow-[0_0_30px_rgba(245,197,66,0.65)]
+              focus:outline-none focus-visible:ring-2 focus-visible:ring-[#f5c542]/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#02152b]
             "
           >
-            Suscríbete
+            {/* Destello que cruza cada pocos segundos */}
+           <span
+  aria-hidden="true"
+  className="pointer-events-none absolute inset-y-0 left-0 w-1/4 bg-gradient-to-r from-transparent via-white/35 to-transparent animate-[destello_5s_ease-in-out_infinite] motion-reduce:hidden"
+/>
+          
+          <i className="fa-regular fa-calendar-check relative text-base" aria-hidden="true" />
+  <span className="relative">RESERVAR</span>
             <svg
               width="14"
               height="14"
               viewBox="0 0 24 24"
               fill="none"
               aria-hidden="true"
-              className="transition-transform duration-300 group-hover:translate-x-0.5"
+              className="relative transition-transform duration-300 group-hover:translate-x-1"
             >
               <path
                 d="M5 12h14M13 6l6 6-6 6"
@@ -249,6 +259,8 @@ export default function Header() {
               />
             </svg>
           </Link>
+
+
         </div>
       </div>
 
@@ -453,28 +465,35 @@ export default function Header() {
               );
             })}
 
-            <li className="mt-6">
+                        <li className="mt-6">
               <Link
-                href="/suscribete"
+                href="/reservar"
                 onClick={() => setOpen(false)}
                 className="
-                  group flex items-center justify-center gap-2
+                  group relative flex items-center justify-center gap-2 overflow-hidden
                   rounded-2xl px-5 py-[18px]
-                  bg-primary-light
-                  font-poppins text-sm font-semibold text-white
-                  shadow-lg shadow-primary-glow/30
-                  transition-all duration-300
-                  hover:scale-[1.02] hover:shadow-primary-glow/50
+                  bg-[linear-gradient(110deg,#c47f0a,#f5c542,#ffe9a8,#f5c542,#c47f0a)]
+                  bg-[length:200%_100%] bg-[position:0%_0] hover:bg-[position:100%_0]
+                  font-poppins text-sm font-bold text-[#02152b]
+                  shadow-[0_0_18px_rgba(245,197,66,0.35)]
+                  transition-all duration-500
+                  hover:scale-[1.02] hover:shadow-[0_0_30px_rgba(245,197,66,0.65)]
                 "
               >
-                Suscríbete
+               <span
+  aria-hidden="true"
+  className="pointer-events-none absolute inset-y-0 left-0 w-1/4 bg-gradient-to-r from-transparent via-white/35 to-transparent animate-[destello_5s_ease-in-out_infinite] motion-reduce:hidden"
+/>
+                <i className="fa-regular fa-calendar-check relative text-base" aria-hidden="true" />
+
+                <span className="relative">RESERVAR</span>
                 <svg
                   width="14"
                   height="14"
                   viewBox="0 0 24 24"
                   fill="none"
                   aria-hidden="true"
-                  className="transition-transform duration-300 group-hover:translate-x-0.5"
+                  className="relative transition-transform duration-300 group-hover:translate-x-1"
                 >
                   <path
                     d="M5 12h14M13 6l6 6-6 6"
@@ -486,6 +505,8 @@ export default function Header() {
                 </svg>
               </Link>
             </li>
+
+
           </ul>
         </div>
       </div>

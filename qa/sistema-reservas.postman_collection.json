@@ -1,0 +1,93 @@
+{
+  "info": {
+    "name": "Sistema de Reservas API",
+    "description": "Colección para probar la API de alquiler de artículos. Variable base_url = http://127.0.0.1:8000",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base_url", "value": "http://127.0.0.1:8000" }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "item": [
+        {
+          "name": "GET /health",
+          "request": { "method": "GET", "url": "{{base_url}}/health" }
+        }
+      ]
+    },
+    {
+      "name": "Categorías",
+      "item": [
+        {
+          "name": "Crear categoría",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"nombre\": \"Sillas\",\n  \"descripcion\": \"Sillas de eventos\"\n}" },
+            "url": "{{base_url}}/api/v1/categorias"
+          }
+        },
+        { "name": "Listar categorías", "request": { "method": "GET", "url": "{{base_url}}/api/v1/categorias" } },
+        { "name": "Obtener categoría", "request": { "method": "GET", "url": "{{base_url}}/api/v1/categorias/1" } },
+        {
+          "name": "Actualizar categoría",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"descripcion\": \"Sillas plegables\"\n}" },
+            "url": "{{base_url}}/api/v1/categorias/1"
+          }
+        },
+        { "name": "Eliminar categoría", "request": { "method": "DELETE", "url": "{{base_url}}/api/v1/categorias/1" } }
+      ]
+    },
+    {
+      "name": "Artículos",
+      "item": [
+        {
+          "name": "Crear artículo",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"nombre\": \"Silla plegable\",\n  \"descripcion\": \"Blanca\",\n  \"stock_total\": 50,\n  \"precio_dia\": 2.0,\n  \"categoria_id\": 1\n}" },
+            "url": "{{base_url}}/api/v1/articulos"
+          }
+        },
+        { "name": "Listar artículos", "request": { "method": "GET", "url": "{{base_url}}/api/v1/articulos" } },
+        { "name": "Listar por categoría", "request": { "method": "GET", "url": "{{base_url}}/api/v1/articulos?categoria_id=1" } },
+        { "name": "Obtener artículo", "request": { "method": "GET", "url": "{{base_url}}/api/v1/articulos/1" } }
+      ]
+    },
+    {
+      "name": "Reservas",
+      "item": [
+        {
+          "name": "Consultar disponibilidad",
+          "request": { "method": "GET", "url": "{{base_url}}/api/v1/reservas/disponibilidad?articulo_id=1&fecha_inicio=2026-12-01&fecha_fin=2026-12-05" }
+        },
+        {
+          "name": "Crear reserva",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"cliente\": {\n    \"nombre\": \"Ana Pérez\",\n    \"telefono\": \"+51 999 888 777\",\n    \"correo\": \"ana@correo.com\"\n  },\n  \"fecha_inicio\": \"2026-12-01\",\n  \"fecha_fin\": \"2026-12-05\",\n  \"mensaje\": \"Para un evento el sábado\",\n  \"items\": [\n    { \"articulo_id\": 1, \"cantidad\": 10 }\n  ]\n}" },
+            "url": "{{base_url}}/api/v1/reservas"
+          }
+        },
+        { "name": "Listar reservas", "request": { "method": "GET", "url": "{{base_url}}/api/v1/reservas" } },
+        { "name": "Listar reservas por estado", "request": { "method": "GET", "url": "{{base_url}}/api/v1/reservas?estado=pendiente" } },
+        { "name": "Obtener reserva", "request": { "method": "GET", "url": "{{base_url}}/api/v1/reservas/1" } },
+        { "name": "Cancelar reserva", "request": { "method": "POST", "url": "{{base_url}}/api/v1/reservas/1/cancelar" } }
+      ]
+    },
+    {
+      "name": "Clientes",
+      "item": [
+        { "name": "Listar clientes", "request": { "method": "GET", "url": "{{base_url}}/api/v1/clientes" } },
+        { "name": "Obtener cliente", "request": { "method": "GET", "url": "{{base_url}}/api/v1/clientes/1" } }
+      ]
+    }
+  ]
+}

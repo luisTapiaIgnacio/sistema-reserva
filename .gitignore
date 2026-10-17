@@ -28,3 +28,6 @@ htmlcov/
 # Sistema operativo
 .DS_Store
 Thumbs.db
+
+# Base de datos SQLite local
+*.db

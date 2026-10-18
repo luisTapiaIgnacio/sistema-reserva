@@ -32,7 +32,7 @@ const NAV_LINKS = [
     submenu: SUBMENU_COMPLEMENTA,
   },
   { label: "Portafolio", href: "/portafolio" },
-  { label: "Sobre Nosotros", href: "/sobre-nosotros" },
+  { label: "Sobre Nosotros", href: "/sobreNosotros" },
   { label: "Contáctanos", href: "/contactanos" },
 ];
 

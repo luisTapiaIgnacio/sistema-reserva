@@ -58,7 +58,7 @@ export default function Hero() {
 
           {/* Botón */}
           <a
-            href="https://wa.me/51989661090?text=Hola,%20quiero%20cotizar%20un%20evento%20con%20Nova%20BTL%20y%20Eventos"
+            href="https://wa.me/51913956853?text=Hola,%20quiero%20cotizar%20un%20evento%20con%20Nova%20BTL%20y%20Eventos"
             target="_blank"
             rel="noopener noreferrer"
             className="

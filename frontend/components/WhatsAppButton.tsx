@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 
 const WHATSAPP_URL =
-  "https://wa.me/51989661090?text=Hola,%20quiero%20informaci%C3%B3n%20sobre%20sus%20servicios";
+  "https://wa.me/51913956853?text=Hola,%20quiero%20informaci%C3%B3n%20sobre%20sus%20servicios";
 
 export default function WhatsAppButton() {
   const pathname = usePathname();

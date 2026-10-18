@@ -19,7 +19,7 @@ const SERVICIOS: Servicio[] = [
     descripcion:
       "Diseñamos y producimos eventos que fortalecen tu marca y generan experiencias memorables.",
     whatsapp:
-      "https://wa.me/51989661090?text=Hola,%20quiero%20cotizar%20un%20evento%20corporativo%20con%20Nova%20BTL%20y%20Eventos",
+      "https://wa.me/51913956853?text=Hola,%20quiero%20cotizar%20un%20evento%20corporativo%20con%20Nova%20BTL%20y%20Eventos",
     imagen: "/images/nova-btl/event.jpg",
   },
   {
@@ -28,7 +28,7 @@ const SERVICIOS: Servicio[] = [
     descripcion:
       "Carritos de snacks premium que complementan reuniones, celebraciones y experiencias memorables.",
     whatsapp:
-      "https://wa.me/51989661090?text=Hola,%20estoy%20interesado%20en%20una%20Estacion%20de%20Snack%20Premium",
+      "https://wa.me/51913956853?text=Hola,%20estoy%20interesado%20en%20una%20Estacion%20de%20Snack%20Premium",
     imagen: "/images/nova-btl/estacion-snk.jpg",
   },
   {
@@ -37,7 +37,7 @@ const SERVICIOS: Servicio[] = [
     descripcion:
       "Una experiencia interactiva de fotografía que combina tecnología, diversión y elegancia. Asistentencia, instalacion y desmontaje. ",
     whatsapp:
-      "https://wa.me/51989661090?text=Hola,%20quiero%20cotizar%20una%20actividad%20de%20team%20building",
+      "https://wa.me/51913956853?text=Hola,%20quiero%20cotizar%20una%20actividad%20de%20team%20building",
     imagen: "/images/nova-btl/espejo-ft.jpg",
   },
   {
@@ -46,7 +46,7 @@ const SERVICIOS: Servicio[] = [
     descripcion:
       "Gestionamos productos y materiales que consolidan tu identidad de marca y potencian su reconocimiento.",
     whatsapp:
-      "https://wa.me/51989661090?text=Hola,%20estoy%20interesado%20en%20merchandising%20y%20branding",
+      "https://wa.me/51913956853?text=Hola,%20estoy%20interesado%20en%20merchandising%20y%20branding",
     imagen: "/images/nova-btl/mercha.jpg",
   },
   {
@@ -54,7 +54,7 @@ const SERVICIOS: Servicio[] = [
     titulo: "Espejo fotográfico",
     descripcion: "Recuerdos instantáneos y personalizados para tus invitados.",
     whatsapp:
-      "https://wa.me/51989661090?text=Hola,%20quiero%20cotizar%20un%20espejo%20fotografico",
+      "https://wa.me/51913956853?text=Hola,%20quiero%20cotizar%20un%20espejo%20fotografico",
     imagen: "/images/nova-btl/serv3.png",
   },
 ];

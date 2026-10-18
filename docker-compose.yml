@@ -1,0 +1,14 @@
+services:
+  api:
+    build: .
+    container_name: sistema-reservas-api
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: "sqlite:////app/data/reservas.db"
+    volumes:
+      - reservas-data:/app/data
+    restart: unless-stopped
+
+volumes:
+  reservas-data:

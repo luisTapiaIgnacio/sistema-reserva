@@ -21,6 +21,7 @@ export default function LoginForm() {
           type="email"
           autoComplete="email"
           required
+          defaultValue={estado.email}
           className="w-full rounded-xl border border-white/15 bg-white/5 px-4 py-3 text-base text-white outline-none transition-colors placeholder:text-white/30 focus:border-[#f5c542]"
           placeholder="admin@miranda.pe"
         />

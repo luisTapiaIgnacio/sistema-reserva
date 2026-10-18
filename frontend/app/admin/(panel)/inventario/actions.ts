@@ -7,7 +7,8 @@ import type { ProductoAdmin } from "@/lib/tipos";
 
 const RUTA = "/admin/inventario";
 
-export type EstadoForm = { error?: string; ok?: string };
+// valores: lo escrito vuelve al formulario si hay un error (React lo vacía al enviar)
+export type EstadoForm = { error?: string; ok?: string; valores?: Record<string, string | boolean> };
 
 // Vuelve al inventario mostrando un aviso (verde) o un error (rojo)
 function volver(mensaje: string, tipo: "ok" | "error" = "ok"): never {
@@ -52,7 +53,8 @@ export async function guardarProducto(_prev: EstadoForm, formData: FormData): Pr
     imagen: String(formData.get("imagen") ?? ""),
     activo: formData.get("activo") === "on",
   };
-  if (!datos.precio) return { error: "Escribe el precio." };
+  const valores = { ...datos, categoria_id: String(datos.categoria_id) };
+  if (!datos.precio) return { error: "Escribe el precio.", valores };
 
   let producto: ProductoAdmin;
   try {
@@ -60,7 +62,7 @@ export async function guardarProducto(_prev: EstadoForm, formData: FormData): Pr
       ? await apiAdmin<ProductoAdmin>(`/admin/productos/${id}`, { metodo: "PATCH", cuerpo: datos })
       : await apiAdmin<ProductoAdmin>("/admin/productos", { metodo: "POST", cuerpo: datos });
   } catch (e) {
-    return { error: mensajeError(e) };
+    return { error: mensajeError(e), valores };
   }
   volver(id ? `"${producto.nombre}" guardado.` : `"${producto.nombre}" creado. Agrégale unidades.`);
 }

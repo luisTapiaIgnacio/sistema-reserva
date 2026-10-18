@@ -32,7 +32,17 @@ services:
         condition: service_healthy
     restart: unless-stopped
 
-  # El servicio "web" (Next.js) se añade cuando el frontend use la API (fase 5).
+  web:
+    build: ./frontend
+    container_name: reservas-web
+    environment:
+      # Dentro de Docker la API se llama "api" (el nombre del servicio).
+      API_URL: http://api:8000/api/v1
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api
+    restart: unless-stopped
 
 volumes:
   postgres-data:

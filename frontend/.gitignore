@@ -55,3 +55,5 @@ Desktop.ini
 # 🔒 Archivos temporales
 .tmp/
 .temp/
+# Ejemplo de configuración (sí se sube)
+!.env.example

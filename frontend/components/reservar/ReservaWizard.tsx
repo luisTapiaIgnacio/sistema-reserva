@@ -382,25 +382,25 @@ export default function ReservaWizard({ categorias, productos, horasParaPagar, p
 
                 <div className="space-y-1.5">
                   <label htmlFor="nombre" className="text-sm font-medium text-white">Nombre completo *</label>
-                  <input id="nombre" name="nombre" autoComplete="name" required className={campo} placeholder="Camila Ríos" />
+                  <input id="nombre" name="nombre" defaultValue={estado.valores?.nombre} autoComplete="name" required className={campo} placeholder="Camila Ríos" />
                 </div>
                 <div className="space-y-1.5">
                   <label htmlFor="celular" className="text-sm font-medium text-white">Celular (WhatsApp) *</label>
-                  <input id="celular" name="celular" type="tel" inputMode="numeric" autoComplete="tel" required className={campo} placeholder="987 654 321" />
+                  <input id="celular" name="celular" defaultValue={estado.valores?.celular} type="tel" inputMode="numeric" autoComplete="tel" required className={campo} placeholder="987 654 321" />
                 </div>
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div className="space-y-1.5">
                     <label htmlFor="distrito" className="text-sm font-medium text-white">Distrito (opcional)</label>
-                    <input id="distrito" name="distrito" className={campo} placeholder="Miraflores" />
+                    <input id="distrito" name="distrito" defaultValue={estado.valores?.distrito} className={campo} placeholder="Miraflores" />
                   </div>
                   <div className="space-y-1.5">
                     <label htmlFor="email" className="text-sm font-medium text-white">Correo (opcional)</label>
-                    <input id="email" name="email" type="email" autoComplete="email" className={campo} placeholder="tucorreo@gmail.com" />
+                    <input id="email" name="email" defaultValue={estado.valores?.email} type="email" autoComplete="email" className={campo} placeholder="tucorreo@gmail.com" />
                   </div>
                 </div>
                 <div className="space-y-1.5">
                   <label htmlFor="direccion" className="text-sm font-medium text-white">Dirección del evento (opcional)</label>
-                  <input id="direccion" name="direccion" autoComplete="street-address" className={campo} placeholder="Av. Larco 123" />
+                  <input id="direccion" name="direccion" defaultValue={estado.valores?.direccion} autoComplete="street-address" className={campo} placeholder="Av. Larco 123" />
                 </div>
 
                 {estado.error && (
@@ -441,7 +441,7 @@ export default function ReservaWizard({ categorias, productos, horasParaPagar, p
                 </ul>
               )}
               <dl className="space-y-2.5 border-t border-white/10 pt-4 text-sm">
-                <div className="flex justify-between gap-3"><dt>Fecha</dt><dd className="text-right font-medium capitalize text-white">{fecha ? fechaLarga(fecha) : "—"}</dd></div>
+                <div className="flex justify-between gap-3"><dt>Fecha</dt><dd className="text-right font-medium first-letter:uppercase text-white">{fecha ? fechaLarga(fecha) : "—"}</dd></div>
                 <div className="flex justify-between gap-3"><dt>Horario</dt><dd className="text-right font-medium text-white">{fecha ? horario : "—"}</dd></div>
               </dl>
               <div className="h-px bg-white/10" />

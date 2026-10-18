@@ -126,7 +126,7 @@ export default async function ReservaDetallePage({ params, searchParams }: Props
             ))}
           </ul>
           <dl className="mt-3 space-y-2 border-t border-white/10 pt-3 text-sm">
-            <div className="flex justify-between gap-3"><dt className="text-white/60">Fecha</dt><dd className="text-right capitalize text-white">{fecha}</dd></div>
+            <div className="flex justify-between gap-3"><dt className="text-white/60">Fecha</dt><dd className="text-right first-letter:uppercase text-white">{fecha}</dd></div>
             {reserva.horario && <div className="flex justify-between gap-3"><dt className="text-white/60">Horario</dt><dd className="text-right text-white">{reserva.horario}</dd></div>}
           </dl>
           <dl className="mt-3 space-y-2 border-t border-white/10 pt-3 text-sm">

@@ -13,8 +13,10 @@ const etiqueta = "block text-sm text-white/80";
 const campo =
   "w-full rounded-xl border border-white/15 bg-white/5 px-4 py-3 text-base text-white outline-none placeholder:text-white/30 focus:border-[#f5c542] md:text-sm";
 
-export default function ConfiguracionForm({ configuracion: c }: { configuracion: Configuracion }) {
+export default function ConfiguracionForm({ configuracion }: { configuracion: Configuracion }) {
   const [estado, accion, guardando] = useActionState(guardarConfiguracion, inicial);
+  // Tras guardar (o tras un error) se muestra lo último que se envió
+  const c = estado.valores ?? configuracion;
   // Filas vacías al final para poder agregar cuentas
   const bancos = [...c.bancos, ...Array.from({ length: Math.max(0, FILAS_BANCOS - c.bancos.length) }, () => null)];
 

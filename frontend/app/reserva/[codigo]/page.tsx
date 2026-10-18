@@ -107,7 +107,7 @@ export default async function ReservaPage({ params, searchParams }: Props) {
             </ul>
             <div className="my-4 h-px bg-white/10" />
             <dl className="space-y-2.5 text-sm">
-              <div className="flex justify-between gap-3"><dt>Fecha</dt><dd className="text-right font-medium capitalize text-white">{fecha}</dd></div>
+              <div className="flex justify-between gap-3"><dt>Fecha</dt><dd className="text-right font-medium first-letter:uppercase text-white">{fecha}</dd></div>
               {reserva.horario && <div className="flex justify-between gap-3"><dt>Horario</dt><dd className="text-right font-medium text-white">{reserva.horario}</dd></div>}
               {reserva.distrito && <div className="flex justify-between gap-3"><dt>Distrito</dt><dd className="text-right font-medium text-white">{reserva.distrito}</dd></div>}
               <div className="flex justify-between gap-3"><dt>A nombre de</dt><dd className="text-right font-medium text-white">{reserva.cliente_nombre}</dd></div>

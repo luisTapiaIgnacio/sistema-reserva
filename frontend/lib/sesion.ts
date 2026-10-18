@@ -5,11 +5,17 @@ import { cookies } from "next/headers";
 
 export const COOKIE_SESION = "miranda_admin";
 
+// En producción la cookie viaja solo por HTTPS. Para probar por http en la red local
+// (ej. http://192.168.1.50:3000) se puede desactivar con COOKIE_SECURE=false.
+const COOKIE_SEGURA = process.env.COOKIE_SECURE
+  ? process.env.COOKIE_SECURE === "true"
+  : process.env.NODE_ENV === "production";
+
 export async function guardarToken(token: string, expiraEn: string) {
   const segundos = Math.max(0, Math.floor((new Date(expiraEn).getTime() - Date.now()) / 1000));
   (await cookies()).set(COOKIE_SESION, token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production", // solo HTTPS en producción
+    secure: COOKIE_SEGURA,
     sameSite: "lax",
     path: "/",
     maxAge: segundos, // vence junto con el token

@@ -4,7 +4,11 @@ import { redirect } from "next/navigation";
 import { api, ApiError } from "@/lib/api";
 import type { ReservaCreada } from "@/lib/tipos";
 
-export type EstadoReservaForm = { error?: string; sinStock?: boolean };
+// valores: lo que escribió el cliente vuelve al formulario si hay un error
+// (React vacía el formulario después de cada envío).
+export type EstadoReservaForm = { error?: string; sinStock?: boolean; valores?: Record<string, string> };
+
+const CAMPOS_CLIENTE = ["nombre", "celular", "distrito", "email", "direccion"];
 
 type Item = { producto_id: number; cantidad: number };
 
@@ -13,9 +17,10 @@ export async function crearReserva(_prev: EstadoReservaForm, formData: FormData)
   try {
     items = JSON.parse(String(formData.get("items") ?? "[]"));
   } catch {
-    return { error: "Elige al menos un producto." };
+    return { error: "Elige al menos un producto.", valores: {} };
   }
   const texto = (campo: string) => String(formData.get(campo) ?? "");
+  const valores = Object.fromEntries(CAMPOS_CLIENTE.map((c) => [c, texto(c)]));
 
   let reserva: ReservaCreada;
   try {
@@ -34,9 +39,9 @@ export async function crearReserva(_prev: EstadoReservaForm, formData: FormData)
   } catch (e) {
     if (!(e instanceof ApiError)) throw e;
     if (e.status === 409 && e.datos.sin_stock) {
-      return { error: "Alguien acaba de reservar esa fecha. Elige otra, por favor.", sinStock: true };
+      return { error: "Alguien acaba de reservar esa fecha. Elige otra, por favor.", sinStock: true, valores };
     }
-    return { error: e.message };
+    return { error: e.message, valores };
   }
 
   redirect(`/reserva/${reserva.codigo}?t=${reserva.token_acceso}`);

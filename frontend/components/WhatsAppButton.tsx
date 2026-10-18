@@ -1,11 +1,13 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 
 const WHATSAPP_URL =
   "https://wa.me/51989661090?text=Hola,%20quiero%20informaci%C3%B3n%20sobre%20sus%20servicios";
 
 export default function WhatsAppButton() {
+  const pathname = usePathname();
   const [showMessage, setShowMessage] = useState(false);
   const [dismissed, setDismissed] = useState(false);
 
@@ -20,8 +22,14 @@ export default function WhatsAppButton() {
     setDismissed(true);
   };
 
+  // Es para los clientes: en el panel de administración tapaba el menú
+  if (pathname.startsWith("/admin")) return null;
+
+  // En /reservar el celular tiene una barra fija abajo: el botón sube para no taparla
+  const posicion = pathname.startsWith("/reservar") ? "bottom-28 lg:bottom-6" : "bottom-6";
+
   return (
-    <div className="fixed bottom-6 left-6 z-40 flex items-end gap-3">
+    <div className={`fixed ${posicion} left-6 z-40 flex items-end gap-3`}>
       {/* Botón circular de WhatsApp */}
       <a
         href={WHATSAPP_URL}

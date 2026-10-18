@@ -1,36 +1,35 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Frontend · Miranda Magic Mirror
 
-## Getting Started
+Web pública y panel de administración en **Next.js 16**. No tiene base de datos
+propia: todo lo pide a la API en Python (`../backend`) desde el servidor de Next.js.
 
-First, run the development server:
+## Desarrollo
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+cp .env.example .env.local   # dirección de la API
+npm run dev                  # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+La API debe estar corriendo (ver el README de la raíz).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Estructura
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Carpeta | Qué hay |
+|---|---|
+| `app/reservar`, `app/reserva/[codigo]` | Reserva del cliente (carrito → fecha → datos → WhatsApp) |
+| `app/admin` | Panel: login, resumen, reservas, inventario, ajustes |
+| `app/api` | Dos rutas que reenvían a la API (calendario y avisos del panel) |
+| `lib/api.ts` | Cliente de la API (solo servidor) |
+| `lib/admin.ts`, `lib/sesion.ts` | Sesión del panel: el token va en una cookie `httpOnly` |
+| `lib/tipos.ts` | Tipos de las respuestas de la API |
+| `proxy.ts` | Protege `/admin` (en Next.js 16 se llama así, en minúsculas) |
 
-## Learn More
+## Compilar
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npm run build
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+En máquinas con poca memoria (≈ 2 GB) Turbopack puede quedarse sin RAM;
+`npx next build --webpack` usa bastante menos.

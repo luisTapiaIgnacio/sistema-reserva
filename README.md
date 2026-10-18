@@ -4,9 +4,9 @@ Monorepo con el frontend y el backend del sistema de reservas.
 
 ```
 sistema-reserva/
-├── backend/            API en Python (FastAPI + SQLAlchemy)
-├── frontend/           Web en Next.js
-└── docker-compose.yml  PostgreSQL + API
+├── backend/            API en Python (FastAPI + SQLAlchemy + PostgreSQL)
+├── frontend/           Web y panel en Next.js (sin base de datos propia: usa la API)
+└── docker-compose.yml  PostgreSQL + API + Web
 ```
 
 ## Levantar con Docker
@@ -15,6 +15,7 @@ sistema-reserva/
 docker compose up --build
 ```
 
+- Web: http://localhost:3000 (reservas: `/reservar`, panel: `/admin`)
 - API: http://localhost:8000/docs
 - PostgreSQL: `localhost:5432` (usuario, clave y base: `reservas`)
 
@@ -51,11 +52,12 @@ Tests: `pytest` (desde `backend/`; usan SQLite en memoria, no necesitan Postgres
 2. Genera la migración: `alembic revision --autogenerate -m "describe el cambio"`.
 3. Revisa el archivo creado en `backend/alembic/versions/` y aplícalo: `alembic upgrade head`.
 
-**Frontend**
+**Frontend** (con la API ya corriendo)
 
 ```bash
 cd frontend
 npm install
+cp .env.example .env.local
 npm run dev
 ```
 
@@ -100,8 +102,9 @@ Documentación interactiva en http://localhost:8000/docs.
 | `/api/v1/admin/categorias`, `/productos`, `/unidades` | Inventario (solo rol ADMIN) |
 | `PATCH /api/v1/admin/configuracion` | Plazo, % adelanto, datos de pago (solo rol ADMIN) |
 
-## Estado de la migración
+## Producción
 
-El frontend todavía usa Prisma con su propia base de datos. La lógica de
-negocio se está pasando al backend en Python por fases; cuando termine,
-el frontend solo llamará a la API.
+- Define una `SECRET_KEY` propia en un archivo `.env` junto a `docker-compose.yml`
+  (`python -c "import secrets; print(secrets.token_urlsafe(48))"`).
+- Sirve la web por **HTTPS**: la cookie de sesión del panel solo viaja cifrada.
+  Para pruebas por http en la red local existe `COOKIE_SECURE=false` (servicio `web`).

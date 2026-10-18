@@ -5,11 +5,8 @@ from fastapi import FastAPI
 from app import models  # noqa: F401  (importa los modelos para registrarlos)
 from app.api.v1.api import api_router
 from app.core.config import settings
-from app.core.database import Base, engine
 
-# Crea las tablas en la base de datos si no existen.
-# (Más adelante esto lo sustituiremos por migraciones con Alembic.)
-Base.metadata.create_all(bind=engine)
+# Las tablas las crea Alembic: `alembic upgrade head` (ver README).
 
 app = FastAPI(
     title=settings.PROJECT_NAME,

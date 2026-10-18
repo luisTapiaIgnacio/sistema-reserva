@@ -1,4 +1,4 @@
-"""Modelo Cliente: quien realiza una reserva. Se identifica por su correo."""
+"""Modelo Cliente: quien realiza una reserva. Se identifica por su celular."""
 
 from __future__ import annotations
 
@@ -18,10 +18,8 @@ class Cliente(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True)
     nombre: Mapped[str] = mapped_column(String(120))
-    telefono: Mapped[str | None] = mapped_column(String(30), default=None)
-    correo: Mapped[str] = mapped_column(String(150), unique=True, index=True)
+    # Obligatorio y único: 9 dígitos, sin +51 (ej. "987654321").
+    celular: Mapped[str] = mapped_column(String(15), unique=True)
+    email: Mapped[str | None] = mapped_column(String(150), default=None)
 
-    reservas: Mapped[list[Reserva]] = relationship(
-        back_populates="cliente",
-        cascade="all, delete-orphan",
-    )
+    reservas: Mapped[list[Reserva]] = relationship(back_populates="cliente")

@@ -1,4 +1,4 @@
-"""Modelo Categoría: agrupa artículos (Espejos, Mesas, Sillas, Sombrillas...)."""
+"""Modelo Categoría: agrupa productos (Espejos, Cabinas 360°...)."""
 
 from __future__ import annotations
 
@@ -10,19 +10,18 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.core.database import Base
 
 if TYPE_CHECKING:  # solo para type hints, evita imports circulares en ejecución
-    from app.models.articulo import Articulo
+    from app.models.producto import Producto
 
 
 class Categoria(Base):
     __tablename__ = "categorias"
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    nombre: Mapped[str] = mapped_column(String(100), unique=True, index=True)
-    descripcion: Mapped[str | None] = mapped_column(String(255), default=None)
+    nombre: Mapped[str] = mapped_column(String(100))
+    slug: Mapped[str] = mapped_column(String(120), unique=True)
+    # Posición en los listados (1, 2, 3...).
+    orden: Mapped[int] = mapped_column(default=0)
+    # Desactivarla la oculta de la web sin borrar nada.
+    activa: Mapped[bool] = mapped_column(default=True)
 
-    # Una categoría tiene muchos artículos. Si se borra la categoría,
-    # se borran sus artículos (cascade).
-    articulos: Mapped[list[Articulo]] = relationship(
-        back_populates="categoria",
-        cascade="all, delete-orphan",
-    )
+    productos: Mapped[list[Producto]] = relationship(back_populates="categoria")

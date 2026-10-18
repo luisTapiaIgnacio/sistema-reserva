@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useActionState, useEffect, useState } from "react";
 import { crearReserva, type EstadoReservaForm } from "@/app/reservar/actions";
-import { fechaLarga, hoyLima, moverMes, soles, sumarDias } from "@/lib/fechas";
+import { fechaLarga, hoyLima, moverMes, rangoFechas, soles, sumarDias } from "@/lib/fechas";
 import type { Categoria, Disponibilidad, Producto } from "@/lib/tipos";
 
 type Props = {
@@ -20,6 +20,8 @@ type EstadoCalendario = { clave: string; libres: Record<number, Record<string, n
 const PASOS = ["Productos", "Fecha", "Tus datos", "Adelanto"];
 const DIAS = ["Lu", "Ma", "Mi", "Ju", "Vi", "Sá", "Do"];
 const MESES = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+// Igual que DIAS_MAXIMOS_RESERVA del backend (de inicio a fin, ambos incluidos)
+const DIAS_MAXIMOS = 7;
 const HORARIOS = ["Por coordinar", "Mañana · 9 a. m. – 1 p. m.", "Tarde · 3 – 7 p. m.", "Noche · 8 p. m. – 12 a. m."];
 
 const campo =
@@ -31,7 +33,8 @@ export default function ReservaWizard({ categorias, productos, horasParaPagar, p
   const [paso, setPaso] = useState(1);
   const [filtro, setFiltro] = useState<number | "todas">("todas");
   const [carrito, setCarrito] = useState<Carrito>({});
-  const [fecha, setFecha] = useState<string | null>(null);
+  const [fecha, setFecha] = useState<string | null>(null); // primer día del evento
+  const [fechaFin, setFechaFin] = useState<string | null>(null); // último día (null = un solo día)
   const [horario, setHorario] = useState(HORARIOS[0]);
   const [mes, setMes] = useState(() => hoyLima().slice(0, 7));
   const [recarga, setRecarga] = useState(0);
@@ -45,6 +48,7 @@ export default function ReservaWizard({ categorias, productos, horasParaPagar, p
   const adelanto = Math.ceil((total * porcentajeAdelanto) / 100);
 
   const visibles = filtro === "todas" ? productos : productos.filter((p) => p.categoria_id === filtro);
+  const fin = fechaFin ?? fecha;
   const manana = sumarDias(hoyLima(), 1);
   const mesMinimo = manana.slice(0, 7);
 
@@ -87,6 +91,26 @@ export default function ReservaWizard({ categorias, productos, horasParaPagar, p
     return minimo;
   }
 
+  // Primer clic: inicio. Segundo clic en un día posterior: fin del rango.
+  // Un clic más (o uno en un día anterior) empieza de nuevo.
+  function elegirDia(dia: string) {
+    if (!fecha || fechaFin || dia <= fecha) {
+      setFecha(dia);
+      setFechaFin(null);
+      return;
+    }
+    const dias: string[] = [];
+    for (let d = sumarDias(fecha, 1); d <= dia; d = sumarDias(d, 1)) dias.push(d);
+    const cabe = dias.length + 1 <= DIAS_MAXIMOS;
+    // Los días de otro mes aún no se conocen: la API los revisa al reservar
+    const hayStock = dias.every((d) => (sobranteDelDia(d) ?? 0) >= 0);
+    if (cabe && hayStock) setFechaFin(dia);
+    else {
+      setFecha(dia);
+      setFechaFin(null);
+    }
+  }
+
   // ---------- Calendario ----------
   const [anio, numMes] = mes.split("-").map(Number);
   const blancos = (new Date(Date.UTC(anio, numMes - 1, 1)).getUTCDay() + 6) % 7; // semana empieza lunes
@@ -101,10 +125,12 @@ export default function ReservaWizard({ categorias, productos, horasParaPagar, p
       return siguiente;
     });
     setFecha(null); // otra combinación: hay que volver a elegir el día
+    setFechaFin(null);
   }
 
   function volverAFechas() {
     setFecha(null);
+    setFechaFin(null);
     setRecarga((n) => n + 1); // vuelve a consultar la disponibilidad
     setPaso(2);
   }
@@ -273,7 +299,10 @@ export default function ReservaWizard({ categorias, productos, horasParaPagar, p
             {paso === 2 && unidades > 0 && (
               <div>
                 <h2 className="text-lg font-semibold text-white!">Elige la fecha de tu evento</h2>
-                <p className="mt-1 text-sm">Solo verás disponibles los días en que tenemos todo lo que elegiste.</p>
+                <p className="mt-1 text-sm">
+                  Toca un día. Si tu evento dura más (máximo {DIAS_MAXIMOS} días), toca también el último día.
+                  Solo verás disponibles los días en que tenemos todo lo que elegiste.
+                </p>
 
                 <div className="mt-4 rounded-2xl border border-white/10 bg-[#0d1b2a] p-4 md:p-6">
                   <div className="mb-4 flex items-center justify-between">
@@ -314,25 +343,28 @@ export default function ReservaWizard({ categorias, productos, horasParaPagar, p
                       const pasado = dia < manana;
                       const agotado = sobrante !== null && sobrante < 0;
                       const justo = sobrante === 0; // se lleva las últimas unidades
-                      const elegido = dia === fecha;
+                      const elegido = dia === fecha || dia === fin;
+                      const enRango = !!fecha && !!fin && dia > fecha && dia < fin;
                       const bloqueado = pasado || agotado || cargando || sobrante === null;
 
                       const color = elegido
                         ? "bg-[#f5c542] font-bold text-[#02152b]"
-                        : pasado
-                          ? "text-white/20"
-                          : agotado
-                            ? "bg-red-400/10 text-red-300/60 line-through"
-                            : justo
-                              ? "bg-amber-400/15 text-amber-200 hover:bg-amber-400/25"
-                              : "bg-emerald-400/10 text-emerald-200 hover:bg-emerald-400/20";
+                        : enRango
+                          ? "bg-[#f5c542]/30 font-semibold text-white"
+                          : pasado
+                            ? "text-white/20"
+                            : agotado
+                              ? "bg-red-400/10 text-red-300/60 line-through"
+                              : justo
+                                ? "bg-amber-400/15 text-amber-200 hover:bg-amber-400/25"
+                                : "bg-emerald-400/10 text-emerald-200 hover:bg-emerald-400/20";
 
                       return (
                         <button
                           key={dia}
                           type="button"
                           disabled={bloqueado}
-                          onClick={() => setFecha(dia)}
+                          onClick={() => elegirDia(dia)}
                           aria-label={`${fechaLarga(dia)}${agotado ? ", no disponible" : ""}`}
                           className={`h-11 cursor-pointer rounded-xl text-sm tabular-nums transition-colors disabled:cursor-not-allowed ${color}`}
                         >
@@ -347,6 +379,12 @@ export default function ReservaWizard({ categorias, productos, horasParaPagar, p
                     <span className="flex items-center gap-1.5"><i className="h-2.5 w-2.5 rounded-full bg-amber-400" />Últimas unidades</span>
                     <span className="flex items-center gap-1.5"><i className="h-2.5 w-2.5 rounded-full bg-red-300" />No disponible</span>
                   </div>
+                  {fecha && fin && (
+                    <p className="mt-3 text-sm text-white first-letter:uppercase">
+                      {rangoFechas(fecha, fin)}
+                      {fin !== fecha && ` · ${diasEntre(fecha, fin)} días`}
+                    </p>
+                  )}
                   {calActual?.error && (
                     <p className="mt-3 text-sm text-red-300">No pudimos cargar la disponibilidad. Revisa tu conexión e intenta de nuevo.</p>
                   )}
@@ -378,6 +416,7 @@ export default function ReservaWizard({ categorias, productos, horasParaPagar, p
 
                 <input type="hidden" name="items" value={JSON.stringify(items)} />
                 <input type="hidden" name="fecha" value={fecha} />
+                <input type="hidden" name="fecha_fin" value={fin ?? fecha} />
                 <input type="hidden" name="horario" value={horario} />
 
                 <div className="space-y-1.5">
@@ -441,7 +480,7 @@ export default function ReservaWizard({ categorias, productos, horasParaPagar, p
                 </ul>
               )}
               <dl className="space-y-2.5 border-t border-white/10 pt-4 text-sm">
-                <div className="flex justify-between gap-3"><dt>Fecha</dt><dd className="text-right font-medium first-letter:uppercase text-white">{fecha ? fechaLarga(fecha) : "—"}</dd></div>
+                <div className="flex justify-between gap-3"><dt>Fecha</dt><dd className="text-right font-medium first-letter:uppercase text-white">{fecha && fin ? rangoFechas(fecha, fin) : "—"}</dd></div>
                 <div className="flex justify-between gap-3"><dt>Horario</dt><dd className="text-right font-medium text-white">{fecha ? horario : "—"}</dd></div>
               </dl>
               <div className="h-px bg-white/10" />
@@ -459,7 +498,7 @@ export default function ReservaWizard({ categorias, productos, horasParaPagar, p
       <div className="fixed inset-x-0 bottom-0 z-40 flex items-center gap-3 border-t border-white/10 bg-[#02152b]/95 px-4 pb-[calc(0.75rem+env(safe-area-inset-bottom))] pt-3 shadow-[0_-10px_30px_-10px_rgba(0,0,0,0.5)] backdrop-blur lg:hidden">
         <div className="min-w-0 leading-tight">
           <p className="truncate text-[11px]">
-            {fecha ? fechaLarga(fecha) : unidades ? `${unidades} ${unidades === 1 ? "producto" : "productos"}` : "Elige tus productos"}
+            {fecha && fin ? rangoFechas(fecha, fin) : unidades ? `${unidades} ${unidades === 1 ? "producto" : "productos"}` : "Elige tus productos"}
           </p>
           <p className="text-base font-semibold text-white">
             {unidades ? (paso === 3 ? `Adelanto ${soles(adelanto)}` : soles(total)) : "—"}
@@ -469,4 +508,9 @@ export default function ReservaWizard({ categorias, productos, horasParaPagar, p
       </div>
     </section>
   );
+}
+
+// Días del rango, ambos incluidos: "2026-11-15" → "2026-11-17" = 3
+function diasEntre(inicio: string, fin: string) {
+  return Math.round((Date.parse(fin) - Date.parse(inicio)) / 86_400_000) + 1;
 }

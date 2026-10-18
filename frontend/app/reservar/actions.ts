@@ -29,6 +29,7 @@ export async function crearReserva(_prev: EstadoReservaForm, formData: FormData)
       metodo: "POST",
       cuerpo: {
         fecha_inicio: texto("fecha"),
+        fecha_fin: texto("fecha_fin") || texto("fecha"),
         horario: texto("horario"),
         distrito: texto("distrito"),
         direccion: texto("direccion"),

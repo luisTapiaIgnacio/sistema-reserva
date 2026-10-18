@@ -11,8 +11,15 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
     PROJECT_NAME: str = "Sistema de Reservas API"
-    # Por defecto usamos un archivo SQLite local. Fácil de cambiar por PostgreSQL.
-    DATABASE_URL: str = "sqlite:///./reservas.db"
+    DATABASE_URL: str = "postgresql+psycopg://reservas:reservas@localhost:5432/reservas"
+
+    # Reglas de negocio de las reservas.
+    ZONA_HORARIA: str = "America/Lima"
+    PORCENTAJE_ADELANTO: int = 50  # % del total que se paga para confirmar
+    HORAS_PARA_PAGAR: int = 24  # tiempo que la fecha queda separada sin pagar
+    DIAS_MAXIMOS_RESERVA: int = 7  # de fecha_inicio a fecha_fin, ambos incluidos
+    MAX_CANTIDAD_POR_PRODUCTO: int = 10
+    MAX_PRODUCTOS_POR_RESERVA: int = 10
 
 
 # Instancia única que importaremos en el resto del proyecto.

@@ -6,6 +6,7 @@ email-validator==2.2.0
 psycopg[binary]==3.3.6
 alembic==1.14.0
 bcrypt==5.0.0
+tzdata==2025.2
 
 # Desarrollo y pruebas
 pytest==8.3.3

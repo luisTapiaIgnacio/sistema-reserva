@@ -22,6 +22,9 @@ services:
     container_name: reservas-api
     environment:
       DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-reservas}:${POSTGRES_PASSWORD:-reservas}@db:5432/${POSTGRES_DB:-reservas}
+      # Clave de la sesión del panel. La de abajo es SOLO para desarrollo:
+      # en producción define SECRET_KEY en un archivo .env junto a este docker-compose.yml.
+      SECRET_KEY: ${SECRET_KEY:-solo-desarrollo-cambia-esta-clave-en-produccion}
     ports:
       - "8000:8000"
     depends_on:

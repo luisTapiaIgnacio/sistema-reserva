@@ -1,8 +1,8 @@
 """esquema inicial
 
-Revision ID: 83be47b46204
+Revision ID: 9cba0f5050bc
 Revises: 
-Create Date: 2026-10-18 01:33:46.664372
+Create Date: 2026-10-18 02:18:55.332581
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = '83be47b46204'
+revision: str = '9cba0f5050bc'
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -36,6 +36,18 @@ def upgrade() -> None:
     sa.Column('email', sa.String(length=150), nullable=True),
     sa.PrimaryKeyConstraint('id', name=op.f('pk_clientes')),
     sa.UniqueConstraint('celular', name=op.f('uq_clientes_celular'))
+    )
+    op.create_table('configuracion',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('horas_para_pagar', sa.Integer(), nullable=False),
+    sa.Column('porcentaje_adelanto', sa.Integer(), nullable=False),
+    sa.Column('whatsapp', sa.String(length=20), nullable=False),
+    sa.Column('yape_plin_numero', sa.String(length=20), nullable=False),
+    sa.Column('yape_plin_titular', sa.String(length=120), nullable=False),
+    sa.Column('yape_plin_qr', sa.String(length=500), nullable=True),
+    sa.Column('bancos', sa.JSON(), nullable=False),
+    sa.Column('bancos_titular', sa.String(length=120), nullable=False),
+    sa.PrimaryKeyConstraint('id', name=op.f('pk_configuracion'))
     )
     op.create_table('usuarios',
     sa.Column('id', sa.Integer(), nullable=False),
@@ -72,7 +84,7 @@ def upgrade() -> None:
     sa.Column('distrito', sa.String(length=60), nullable=True),
     sa.Column('direccion', sa.String(length=255), nullable=True),
     sa.Column('tipo_evento', sa.String(length=60), nullable=True),
-    sa.Column('estado', sa.Enum('PENDIENTE', 'CONFIRMADA', 'EN_CURSO', 'FINALIZADA', 'CANCELADA', name='estado_reserva'), nullable=False),
+    sa.Column('estado', sa.Enum('RESERVADA', 'CONFIRMADA', 'EN_CURSO', 'FINALIZADA', 'CANCELADA', name='estado_reserva'), nullable=False),
     sa.Column('canal_pago', sa.Enum('WHATSAPP', 'YAPE_PLIN', 'TRANSFERENCIA', name='canal_pago'), nullable=True),
     sa.Column('total', sa.Numeric(precision=10, scale=2), nullable=False),
     sa.Column('adelanto', sa.Numeric(precision=10, scale=2), nullable=False),
@@ -91,10 +103,10 @@ def upgrade() -> None:
     sa.Column('reserva_id', sa.Integer(), nullable=False),
     sa.Column('monto', sa.Numeric(precision=10, scale=2), nullable=False),
     sa.Column('metodo', sa.Enum('YAPE', 'PLIN', 'TRANSFERENCIA', 'EFECTIVO', name='metodo_pago'), nullable=False),
-    sa.Column('origen', sa.Enum('WEB', 'WHATSAPP', 'ADMIN', name='origen_pago'), nullable=False),
+    sa.Column('origen', sa.Enum('WHATSAPP', 'ADMIN', 'PASARELA', name='origen_pago'), nullable=False),
     sa.Column('numero_operacion', sa.String(length=30), nullable=True),
     sa.Column('comprobante_url', sa.String(length=500), nullable=True),
-    sa.Column('estado', sa.Enum('POR_VERIFICAR', 'VERIFICADO', 'RECHAZADO', name='estado_pago'), nullable=False),
+    sa.Column('estado', sa.Enum('POR_VERIFICAR', 'VERIFICADO', 'ANULADO', name='estado_pago'), nullable=False),
     sa.Column('creado_en', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=False),
     sa.ForeignKeyConstraint(['reserva_id'], ['reservas.id'], name=op.f('fk_pagos_reserva_id_reservas'), ondelete='CASCADE'),
     sa.PrimaryKeyConstraint('id', name=op.f('pk_pagos')),
@@ -131,7 +143,7 @@ def upgrade() -> None:
     sa.ForeignKeyConstraint(['reserva_item_id'], ['reserva_items.id'], name=op.f('fk_asignaciones_reserva_item_id_reserva_items'), ondelete='CASCADE'),
     sa.ForeignKeyConstraint(['unidad_id'], ['unidades.id'], name=op.f('fk_asignaciones_unidad_id_unidades')),
     sa.PrimaryKeyConstraint('id', name=op.f('pk_asignaciones')),
-    sa.UniqueConstraint('reserva_item_id', 'unidad_id', name=op.f('uq_asignaciones_item_unidad'))
+    sa.UniqueConstraint('reserva_item_id', 'unidad_id', name='uq_asignaciones_item_unidad')
     )
     op.create_index(op.f('ix_asignaciones_unidad_id'), 'asignaciones', ['unidad_id'], unique=False)
     # ### end Alembic commands ###
@@ -154,6 +166,7 @@ def downgrade() -> None:
     op.drop_index(op.f('ix_productos_categoria_id'), table_name='productos')
     op.drop_table('productos')
     op.drop_table('usuarios')
+    op.drop_table('configuracion')
     op.drop_table('clientes')
     op.drop_table('categorias')
     # ### end Alembic commands ###

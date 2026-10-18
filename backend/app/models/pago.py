@@ -1,4 +1,7 @@
-"""Modelo Pago: un abono a una reserva (adelanto, saldo...)."""
+"""Modelo Pago: un abono a una reserva (adelanto, saldo...).
+
+Lo registra el admin al ver el comprobante, por eso nace VERIFICADO.
+"""
 
 from __future__ import annotations
 
@@ -26,13 +29,13 @@ class Pago(Base):
     monto: Mapped[Decimal] = mapped_column(Numeric(10, 2))
     metodo: Mapped[MetodoPago] = mapped_column(Enum(MetodoPago, name="metodo_pago"))
     origen: Mapped[OrigenPago] = mapped_column(
-        Enum(OrigenPago, name="origen_pago"), default=OrigenPago.WEB
+        Enum(OrigenPago, name="origen_pago"), default=OrigenPago.WHATSAPP
     )
     # Único: evita que se use la misma captura de pago dos veces.
     numero_operacion: Mapped[str | None] = mapped_column(String(30), unique=True, default=None)
     comprobante_url: Mapped[str | None] = mapped_column(String(500), default=None)
     estado: Mapped[EstadoPago] = mapped_column(
-        Enum(EstadoPago, name="estado_pago"), default=EstadoPago.POR_VERIFICAR
+        Enum(EstadoPago, name="estado_pago"), default=EstadoPago.VERIFICADO
     )
     creado_en: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now()

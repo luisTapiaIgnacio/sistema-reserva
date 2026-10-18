@@ -26,3 +26,15 @@ def en_utc(instante: datetime) -> datetime:
 
 def ya_paso(instante: datetime | None) -> bool:
     return instante is None or en_utc(instante) <= ahora()
+
+
+DIAS = ["lunes", "martes", "miércoles", "jueves", "viernes", "sábado", "domingo"]
+MESES = [
+    "enero", "febrero", "marzo", "abril", "mayo", "junio",
+    "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre",
+]
+
+
+def fecha_larga(dia: date) -> str:
+    """Ej. "sábado 15 de noviembre de 2026" (sin depender del idioma del servidor)."""
+    return f"{DIAS[dia.weekday()]} {dia.day} de {MESES[dia.month - 1]} de {dia.year}"

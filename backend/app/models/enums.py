@@ -1,6 +1,6 @@
 """Valores fijos que usan los modelos (estados, métodos de pago, roles...).
 
-Se guardan en MAYÚSCULAS, igual que los usa el frontend ("PENDIENTE", "YAPE"...).
+Se guardan en MAYÚSCULAS, igual que los usa el frontend ("RESERVADA", "YAPE"...).
 """
 
 import enum
@@ -18,7 +18,7 @@ class EstadoUnidad(str, enum.Enum):
 
 
 class EstadoReserva(str, enum.Enum):
-    PENDIENTE = "PENDIENTE"
+    RESERVADA = "RESERVADA"  # fecha separada; espera el comprobante por WhatsApp
     CONFIRMADA = "CONFIRMADA"
     EN_CURSO = "EN_CURSO"
     FINALIZADA = "FINALIZADA"
@@ -39,15 +39,15 @@ class MetodoPago(str, enum.Enum):
 
 
 class OrigenPago(str, enum.Enum):
-    WEB = "WEB"  # el cliente informó el pago en la web
-    WHATSAPP = "WHATSAPP"  # lo mandó por chat y el admin lo registró
+    WHATSAPP = "WHATSAPP"  # mandó la captura por chat y el admin lo registró
     ADMIN = "ADMIN"  # pago registrado a mano (ej. saldo en efectivo)
+    PASARELA = "PASARELA"  # a futuro: pago en línea (tarjeta / Yape)
 
 
 class EstadoPago(str, enum.Enum):
-    POR_VERIFICAR = "POR_VERIFICAR"
+    POR_VERIFICAR = "POR_VERIFICAR"  # a futuro: pago en línea aún sin confirmar
     VERIFICADO = "VERIFICADO"
-    RECHAZADO = "RECHAZADO"
+    ANULADO = "ANULADO"  # registrado por error: no cuenta como pagado
 
 
 class Rol(str, enum.Enum):

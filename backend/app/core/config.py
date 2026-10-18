@@ -13,10 +13,16 @@ class Settings(BaseSettings):
     PROJECT_NAME: str = "Sistema de Reservas API"
     DATABASE_URL: str = "postgresql+psycopg://reservas:reservas@localhost:5432/reservas"
 
-    # Reglas de negocio de las reservas.
+    # Sesión del panel de administración (JWT).
+    # Obligatorio: una frase larga y aleatoria. Genera una con:
+    #   python -c "import secrets; print(secrets.token_urlsafe(48))"
+    SECRET_KEY: str = ""
+    HORAS_SESION: int = 12
+    BCRYPT_ROUNDS: int = 12  # costo del hash de contraseñas (las pruebas usan menos)
+
+    # Límites de las reservas. El plazo para pagar y el % de adelanto
+    # se cambian desde el panel (tabla "configuracion").
     ZONA_HORARIA: str = "America/Lima"
-    PORCENTAJE_ADELANTO: int = 50  # % del total que se paga para confirmar
-    HORAS_PARA_PAGAR: int = 24  # tiempo que la fecha queda separada sin pagar
     DIAS_MAXIMOS_RESERVA: int = 7  # de fecha_inicio a fecha_fin, ambos incluidos
     MAX_CANTIDAD_POR_PRODUCTO: int = 10
     MAX_PRODUCTOS_POR_RESERVA: int = 10

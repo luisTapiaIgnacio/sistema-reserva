@@ -52,14 +52,14 @@ class Reserva(Base):
     direccion: Mapped[str | None] = mapped_column(String(255), default=None)
     tipo_evento: Mapped[str | None] = mapped_column(String(60), default=None)
     estado: Mapped[EstadoReserva] = mapped_column(
-        Enum(EstadoReserva, name="estado_reserva"), default=EstadoReserva.PENDIENTE
+        Enum(EstadoReserva, name="estado_reserva"), default=EstadoReserva.RESERVADA
     )
     canal_pago: Mapped[CanalPago | None] = mapped_column(
         Enum(CanalPago, name="canal_pago"), default=None
     )
     total: Mapped[Decimal] = mapped_column(Numeric(10, 2))
     adelanto: Mapped[Decimal] = mapped_column(Numeric(10, 2))
-    # Si sigue PENDIENTE después de esta hora, la fecha se libera.
+    # Si sigue RESERVADA después de esta hora, la fecha se libera.
     expira_en: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), default=None)
     notas: Mapped[str | None] = mapped_column(Text, default=None)
     creado_en: Mapped[datetime] = mapped_column(

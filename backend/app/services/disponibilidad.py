@@ -4,8 +4,8 @@ Regla de negocio
 ----------------
 libres(día) = unidades OPERATIVAS − unidades comprometidas ese día.
 
-Comprometen unidades las reservas CONFIRMADA, EN_CURSO y las PENDIENTE cuyo
-plazo de pago aún no vence (una pendiente vencida ya no cuenta: la fecha se libera).
+Comprometen unidades las reservas CONFIRMADA, EN_CURSO y las RESERVADA cuyo
+plazo de pago aún no vence (una reservada vencida ya no cuenta: la fecha se libera).
 """
 
 from datetime import date, timedelta
@@ -18,10 +18,10 @@ from app.models import EstadoReserva, EstadoUnidad, Reserva, ReservaItem, Unidad
 
 
 def reserva_ocupa_unidades() -> ColumnElement[bool]:
-    """Condición SQL: la reserva aparta unidades (está activa o pendiente vigente)."""
+    """Condición SQL: la reserva aparta unidades (confirmada, en curso o reservada vigente)."""
     return or_(
         Reserva.estado.in_([EstadoReserva.CONFIRMADA, EstadoReserva.EN_CURSO]),
-        and_(Reserva.estado == EstadoReserva.PENDIENTE, Reserva.expira_en > ahora()),
+        and_(Reserva.estado == EstadoReserva.RESERVADA, Reserva.expira_en > ahora()),
     )
 
 

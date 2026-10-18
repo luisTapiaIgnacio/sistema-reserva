@@ -2,6 +2,7 @@
 
 from app.models.categoria import Categoria
 from app.models.cliente import Cliente
+from app.models.configuracion import Configuracion
 from app.models.enums import (
     CanalPago,
     EstadoPago,
@@ -28,6 +29,7 @@ __all__ = [
     "Asignacion",
     "Pago",
     "Usuario",
+    "Configuracion",
     "TipoProducto",
     "EstadoUnidad",
     "EstadoReserva",

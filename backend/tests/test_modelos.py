@@ -61,7 +61,7 @@ def test_valores_por_defecto(db: Session) -> None:
     assert producto.tipo == TipoProducto.ALQUILER
     assert producto.activo is True
     assert unidad.estado == EstadoUnidad.OPERATIVA
-    assert reserva.estado == EstadoReserva.PENDIENTE
+    assert reserva.estado == EstadoReserva.RESERVADA
     assert reserva.items[0].cantidad == 1
     assert reserva.creado_en is not None
 
@@ -102,7 +102,7 @@ def test_pago_sin_numero_de_operacion_se_puede_repetir(db: Session) -> None:
     db.commit()
 
     assert len(reserva.pagos) == 2
-    assert reserva.pagos[0].estado == EstadoPago.POR_VERIFICAR
+    assert reserva.pagos[0].estado == EstadoPago.VERIFICADO  # lo registra el admin
 
 
 def test_no_se_asigna_la_misma_unidad_dos_veces_al_mismo_item(db: Session) -> None:

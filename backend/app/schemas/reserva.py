@@ -1,13 +1,13 @@
-"""Esquemas de reservas y pagos para la parte pública (el cliente)."""
+"""Esquemas de reservas para la parte pública (el cliente)."""
 
 import re
 from datetime import date, datetime
-from typing import Annotated, Literal
+from typing import Annotated
 
-from pydantic import BaseModel, ConfigDict, EmailStr, Field, field_validator, model_validator
+from pydantic import BaseModel, EmailStr, Field, field_validator, model_validator
 
 from app.core.config import settings
-from app.models.enums import EstadoPago, EstadoReserva, MetodoPago
+from app.models.enums import EstadoReserva
 from app.schemas.comun import Dinero
 
 # Texto opcional: "" o solo espacios se guarda como None.
@@ -98,20 +98,10 @@ class ItemPublico(BaseModel):
     subtotal: Dinero
 
 
-class PagoPublico(BaseModel):
-    model_config = ConfigDict(from_attributes=True)
-
-    monto: Dinero
-    metodo: MetodoPago
-    estado: EstadoPago
-    creado_en: datetime
-
-
 class ReservaPublica(BaseModel):
     codigo: str
     estado: EstadoReserva
-    vencida: bool  # PENDIENTE cuyo plazo de pago ya pasó (la fecha se liberó)
-    pago_en_revision: bool  # hay un pago POR_VERIFICAR
+    vencida: bool  # RESERVADA cuyo plazo para mandar el comprobante ya pasó
     fecha_inicio: date
     fecha_fin: date
     horario: str | None
@@ -121,30 +111,15 @@ class ReservaPublica(BaseModel):
     cliente_nombre: str
     items: list[ItemPublico]
     total: Dinero
-    adelanto: Dinero
-    saldo: Dinero
+    adelanto: Dinero  # mínimo para confirmar
+    pagado: Dinero  # suma de pagos verificados
+    saldo: Dinero  # total − pagado
     expira_en: datetime | None
-    pagos: list[PagoPublico]
+    # Link a WhatsApp con el mensaje ya escrito (código, productos, fecha, montos).
+    enlace_whatsapp: str
     creado_en: datetime
 
 
 class ReservaCreada(ReservaPublica):
     # Solo se devuelve al crearla: con él se arma el link /reserva/{codigo}?t={token}
     token_acceso: str
-
-
-# ---------- Informar pago ----------
-
-
-class InformePagoEntrada(BaseModel):
-    # En efectivo no se informa desde la web: lo registra el admin.
-    metodo: Literal[MetodoPago.YAPE, MetodoPago.PLIN, MetodoPago.TRANSFERENCIA]
-    numero_operacion: str
-
-    @field_validator("numero_operacion")
-    @classmethod
-    def validar_numero(cls, valor: str) -> str:
-        valor = re.sub(r"\s", "", valor)
-        if not re.fullmatch(r"[A-Za-z0-9-]{4,30}", valor):
-            raise ValueError("Revisa el número de operación.")
-        return valor

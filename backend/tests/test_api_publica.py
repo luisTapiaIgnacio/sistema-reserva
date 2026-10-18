@@ -1,51 +1,28 @@
 """Pruebas de la API pública: catálogo, disponibilidad, reservas y pagos."""
 
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta
 from decimal import Decimal
 from typing import Any
+from urllib.parse import unquote
 
 import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from app.core.fechas import ahora, hoy_local
+from app.core.fechas import ahora, en_utc, hoy_local
 from app.models import (
     Categoria,
     EstadoPago,
     EstadoReserva,
-    EstadoUnidad,
+    MetodoPago,
     Pago,
-    Producto,
     Reserva,
-    Unidad,
 )
+from app.services.configuracion import obtener_configuracion
 
 API = "/api/v1"
 FECHA = date(2030, 11, 15)  # lejos en el futuro: siempre es "a partir de mañana"
-
-
-@pytest.fixture()
-def catalogo(db: Session) -> dict[str, int]:
-    """Espejo (2 unidades operativas + 1 en mantenimiento) y Cabina (1 unidad)."""
-    espejos = Categoria(nombre="Espejos", slug="espejos", orden=1)
-    cabinas = Categoria(nombre="Cabinas", slug="cabinas", orden=2)
-    oculta = Categoria(nombre="Oculta", slug="oculta", orden=3, activa=False)
-    espejo = Producto(nombre="Espejo 65″", slug="espejo-65", precio=Decimal("650"), categoria=espejos)
-    cabina = Producto(nombre="Cabina 360", slug="cabina-360", precio=Decimal("401"), categoria=cabinas)
-    inactivo = Producto(nombre="Espejo viejo", slug="espejo-viejo", precio=Decimal("100"), categoria=espejos, activo=False)
-    escondido = Producto(nombre="Secreto", slug="secreto", precio=Decimal("100"), categoria=oculta)
-    db.add_all([espejos, cabinas, oculta, espejo, cabina, inactivo, escondido])
-    db.add_all(
-        [
-            Unidad(codigo="ESP-001", producto=espejo),
-            Unidad(codigo="ESP-002", producto=espejo),
-            Unidad(codigo="ESP-003", producto=espejo, estado=EstadoUnidad.MANTENIMIENTO),
-            Unidad(codigo="CAB-001", producto=cabina),
-        ]
-    )
-    db.commit()
-    return {"espejo": espejo.id, "cabina": cabina.id, "inactivo": inactivo.id, "escondido": escondido.id}
 
 
 def datos_reserva(items: list[dict[str, int]], **cambios: Any) -> dict[str, Any]:
@@ -131,7 +108,7 @@ def test_crear_reserva_con_varios_productos(client: TestClient, catalogo: dict[s
     reserva = respuesta.json()
     assert reserva["codigo"] == f"R-{hoy_local().year}-0001"
     assert reserva["token_acceso"]
-    assert reserva["estado"] == "PENDIENTE"
+    assert reserva["estado"] == "RESERVADA"
     assert reserva["vencida"] is False
     assert reserva["fecha_fin"] == FECHA.isoformat()  # un solo día si no se envía
     assert reserva["cliente_nombre"] == "Camila Ríos"
@@ -141,7 +118,7 @@ def test_crear_reserva_con_varios_productos(client: TestClient, catalogo: dict[s
     ]
     assert reserva["total"] == 1701.0
     assert reserva["adelanto"] == 851.0  # 50 % de 1701 = 850.50 → se redondea hacia arriba
-    assert reserva["saldo"] == 850.0
+    assert (reserva["pagado"], reserva["saldo"]) == (0.0, 1701.0)  # aún no paga nada
 
 
 def test_crear_reserva_normaliza_celular_y_reutiliza_cliente(
@@ -321,64 +298,58 @@ def test_reserva_vencida_se_marca(client: TestClient, catalogo: dict[str, int], 
     assert respuesta.json()["vencida"] is True
 
 
-# ---------- Informar pago ----------
+# ---------- Configuración y WhatsApp ----------
 
 
-def informar(client: TestClient, reserva: dict[str, Any], **datos: str) -> Any:
-    cuerpo = {"metodo": "YAPE", "numero_operacion": "00123456", **datos}
-    return client.post(f"{API}/reservas/{reserva['codigo']}/pagos", params={"t": reserva["token_acceso"]}, json=cuerpo)
+def test_configuracion_publica_por_defecto(client: TestClient) -> None:
+    respuesta = client.get(f"{API}/configuracion")
 
-
-def test_informar_pago(client: TestClient, catalogo: dict[str, int], db: Session) -> None:
-    creada = reservar(client, [{"producto_id": catalogo["espejo"]}]).json()
-
-    respuesta = informar(client, creada, numero_operacion=" 0012 3456 ")
-
-    assert respuesta.status_code == 201
+    assert respuesta.status_code == 200
     datos = respuesta.json()
-    assert datos["pago_en_revision"] is True
-    assert datos["pagos"][0]["monto"] == creada["adelanto"]
-    pago = db.scalar(select(Pago))
-    assert (pago.numero_operacion, pago.estado) == ("00123456", EstadoPago.POR_VERIFICAR)
-    assert pago.reserva.canal_pago.value == "YAPE_PLIN"
+    assert (datos["horas_para_pagar"], datos["porcentaje_adelanto"]) == (4, 50)
+    assert datos["whatsapp"] == "51913956853"
+    assert len(datos["bancos"]) == 3
 
 
-def test_no_se_informa_dos_veces_mientras_se_verifica(client: TestClient, catalogo: dict[str, int]) -> None:
-    creada = reservar(client, [{"producto_id": catalogo["espejo"]}]).json()
-    informar(client, creada)
-
-    assert informar(client, creada, numero_operacion="99999999").status_code == 409
-
-
-def test_numero_de_operacion_repetido_da_409(client: TestClient, catalogo: dict[str, int]) -> None:
-    primera = reservar(client, [{"producto_id": catalogo["espejo"]}]).json()
-    segunda = reservar(
-        client, [{"producto_id": catalogo["cabina"]}], cliente={"nombre": "Otro Cliente", "celular": "912345678"}
-    ).json()
-    informar(client, primera)
-
-    respuesta = informar(client, segunda)
-
-    assert respuesta.status_code == 409
-    assert respuesta.json()["detail"] == "Ese número de operación ya fue registrado."
-
-
-def test_no_se_informa_pago_de_reserva_vencida(client: TestClient, catalogo: dict[str, int], db: Session) -> None:
-    creada = reservar(client, [{"producto_id": catalogo["espejo"]}]).json()
-    db.scalar(select(Reserva)).expira_en = ahora() - timedelta(minutes=1)
+def test_reserva_usa_plazo_y_adelanto_de_la_configuracion(
+    client: TestClient, catalogo: dict[str, int], db: Session
+) -> None:
+    configuracion = obtener_configuracion(db)
+    configuracion.horas_para_pagar = 2
+    configuracion.porcentaje_adelanto = 30
     db.commit()
 
-    assert informar(client, creada).status_code == 409
+    antes = ahora()
+    reserva = reservar(client, [{"producto_id": catalogo["espejo"]}]).json()
+
+    assert reserva["adelanto"] == 195.0  # 30 % de 650
+    vence = datetime.fromisoformat(reserva["expira_en"])
+    assert timedelta(hours=1, minutes=59) < en_utc(vence) - antes < timedelta(hours=2, minutes=1)
 
 
-def test_informar_pago_con_token_falso_da_404(client: TestClient, catalogo: dict[str, int]) -> None:
+def test_enlace_whatsapp_lleva_todos_los_datos(client: TestClient, catalogo: dict[str, int]) -> None:
+    reserva = reservar(
+        client,
+        [{"producto_id": catalogo["espejo"], "cantidad": 2}, {"producto_id": catalogo["cabina"]}],
+    ).json()
+
+    enlace = reserva["enlace_whatsapp"]
+    assert enlace.startswith("https://wa.me/51913956853?text=")
+    mensaje = unquote(enlace.split("text=")[1])
+    assert "2× Espejo 65″, 1× Cabina 360" in mensaje
+    assert "viernes 15 de noviembre de 2030" in mensaje
+    assert "(6 pm - 11 pm, Miraflores)" in mensaje
+    assert reserva["codigo"] in mensaje
+    assert "Total S/ 1,701.00 · Adelanto S/ 851.00" in mensaje
+
+
+def test_reserva_publica_muestra_lo_pagado(client: TestClient, catalogo: dict[str, int], db: Session) -> None:
     creada = reservar(client, [{"producto_id": catalogo["espejo"]}]).json()
+    reserva = db.scalar(select(Reserva))
+    reserva.pagos.append(Pago(monto=Decimal("325"), metodo=MetodoPago.YAPE))
+    reserva.pagos.append(Pago(monto=Decimal("100"), metodo=MetodoPago.YAPE, estado=EstadoPago.ANULADO))
+    db.commit()
 
-    assert informar(client, {**creada, "token_acceso": "falso"}).status_code == 404
+    datos = client.get(f"{API}/reservas/{creada['codigo']}", params={"t": creada["token_acceso"]}).json()
 
-
-@pytest.mark.parametrize("cuerpo", [{"metodo": "EFECTIVO"}, {"numero_operacion": "12"}, {"numero_operacion": "abc$%&"}])
-def test_informar_pago_datos_invalidos(client: TestClient, catalogo: dict[str, int], cuerpo: dict[str, str]) -> None:
-    creada = reservar(client, [{"producto_id": catalogo["espejo"]}]).json()
-
-    assert informar(client, creada, **cuerpo).status_code == 422
+    assert (datos["pagado"], datos["saldo"]) == (325.0, 325.0)  # el anulado no cuenta

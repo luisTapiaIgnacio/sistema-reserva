@@ -1,7 +1,8 @@
 import Link from "next/link";
-import { notFound } from "next/navigation";
-import { prisma } from "@/lib/prisma";
-import { exigirAdmin } from "@/lib/admin";
+import { notFound, redirect } from "next/navigation";
+import { apiAdmin, exigirAdmin } from "@/lib/admin";
+import { ApiError } from "@/lib/api";
+import type { CategoriaAdmin, ProductoAdmin } from "@/lib/tipos";
 import ProductoForm, { type ProductoInicial } from "@/components/admin/ProductoForm";
 
 type Props = {
@@ -12,14 +13,12 @@ type Props = {
 // /admin/inventario/producto/nuevo  → crear
 // /admin/inventario/producto/3      → editar
 export default async function ProductoPage({ params, searchParams }: Props) {
-  await exigirAdmin();
+  const usuario = await exigirAdmin();
+  if (usuario.rol !== "ADMIN") redirect("/admin"); // el inventario es solo del administrador
   const { id } = await params;
   const { categoria } = await searchParams;
 
-  const categorias = await prisma.categoria.findMany({
-    orderBy: { orden: "asc" },
-    select: { id: true, nombre: true },
-  });
+  const categorias = await apiAdmin<CategoriaAdmin[]>("/admin/categorias");
 
   let producto: ProductoInicial;
 
@@ -33,13 +32,18 @@ export default async function ProductoPage({ params, searchParams }: Props) {
       activo: true,
     };
   } else {
-    const encontrado = await prisma.producto.findUnique({ where: { id: Number(id) || 0 } });
-    if (!encontrado) notFound();
+    let encontrado: ProductoAdmin;
+    try {
+      encontrado = await apiAdmin<ProductoAdmin>(`/admin/productos/${Number(id) || 0}`);
+    } catch (e) {
+      if (e instanceof ApiError && (e.status === 404 || e.status === 422)) notFound();
+      throw e;
+    }
     producto = {
       id: encontrado.id,
       nombre: encontrado.nombre,
-      categoriaId: encontrado.categoriaId,
-      precio: encontrado.precio.toString(), // Decimal → texto (no se puede pasar Decimal al cliente)
+      categoriaId: encontrado.categoria_id,
+      precio: String(encontrado.precio),
       descripcion: encontrado.descripcion ?? "",
       imagen: encontrado.imagen ?? "",
       activo: encontrado.activo,
@@ -60,7 +64,7 @@ export default async function ProductoPage({ params, searchParams }: Props) {
           Primero crea una categoría en el inventario.
         </p>
       ) : (
-        <ProductoForm categorias={categorias} producto={producto} />
+        <ProductoForm categorias={categorias.map(({ id, nombre }) => ({ id, nombre }))} producto={producto} />
       )}
     </div>
   );

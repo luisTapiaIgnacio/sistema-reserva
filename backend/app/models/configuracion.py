@@ -32,6 +32,7 @@ class Configuracion(Base):
     whatsapp: Mapped[str] = mapped_column(String(20), default="51913956853")  # sin + ni espacios
     yape_plin_numero: Mapped[str] = mapped_column(String(20), default="999 999 999")
     yape_plin_titular: Mapped[str] = mapped_column(String(120), default="Miranda Magic Mirror")
-    yape_plin_qr: Mapped[str | None] = mapped_column(String(500), default="/images/pagos/qr-ejemplo.svg")
+    # Ruta de la imagen del QR (ej. /images/pagos/qr-yape.png); sin QR no se muestra.
+    yape_plin_qr: Mapped[str | None] = mapped_column(String(500), default=None)
     bancos: Mapped[list[dict[str, Any]]] = mapped_column(JSON, default=lambda: list(BANCOS_EJEMPLO))
     bancos_titular: Mapped[str] = mapped_column(String(120), default="Miranda Magic Mirror")

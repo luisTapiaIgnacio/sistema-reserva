@@ -1,113 +1,139 @@
 import Link from "next/link";
-import type { Prisma } from "@prisma/client";
-import { prisma } from "@/lib/prisma";
-import { exigirAdmin } from "@/lib/admin";
+import { apiAdmin, exigirAdmin } from "@/lib/admin";
 import { soles } from "@/lib/fechas";
 import { estadoVisible, fechaCorta, tiempoRestante } from "@/lib/estado-reserva";
+import type { Novedades, PaginaReservas } from "@/lib/tipos";
 
 export const dynamic = "force-dynamic";
 
 const FILTROS = [
-  { id: "pendientes", label: "Pendientes" },
-  { id: "confirmadas", label: "Confirmadas" },
-  { id: "todas", label: "Todas" },
+  { id: "RESERVADA", label: "Por confirmar" },
+  { id: "CONFIRMADA", label: "Confirmadas" },
+  { id: "EN_CURSO", label: "En curso" },
+  { id: "VENCIDA", label: "Vencidas" },
+  { id: "TODAS", label: "Todas" },
 ];
 
-type Props = { searchParams: Promise<{ filtro?: string }> };
+const POR_PAGINA = 30;
+
+type Props = { searchParams: Promise<{ estado?: string; buscar?: string; pagina?: string }> };
 
 export default async function ReservasPage({ searchParams }: Props) {
   await exigirAdmin();
-  const { filtro = "pendientes" } = await searchParams;
-  const ahora = new Date();
+  const { estado = "RESERVADA", buscar = "", pagina: paginaTexto } = await searchParams;
+  const pagina = Math.max(1, Number(paginaTexto) || 1);
 
-  const where: Prisma.ReservaWhereInput =
-    filtro === "pendientes"
-      ? { estado: "PENDIENTE", expiraEn: { gt: ahora } }
-      : filtro === "confirmadas"
-        ? { estado: { in: ["CONFIRMADA", "EN_CURSO"] } }
-        : {};
-
-  const orderBy: Prisma.ReservaOrderByWithRelationInput =
-    filtro === "pendientes" ? { expiraEn: "asc" } : filtro === "confirmadas" ? { fechaInicio: "asc" } : { creadoEn: "desc" };
-
-  const [reservas, totalPendientes] = await Promise.all([
-    prisma.reserva.findMany({
-      where,
-      orderBy,
-      take: 100,
-      include: {
-        cliente: true,
-        items: { include: { producto: true, asignaciones: { include: { unidad: true } } } },
-        pagos: { select: { estado: true } },
+  const [lista, novedades] = await Promise.all([
+    apiAdmin<PaginaReservas>("/admin/reservas", {
+      query: {
+        estado: estado === "TODAS" || !FILTROS.some((f) => f.id === estado) ? undefined : estado,
+        buscar,
+        pagina,
+        por_pagina: POR_PAGINA,
       },
     }),
-    prisma.reserva.count({ where: { estado: "PENDIENTE", expiraEn: { gt: ahora } } }),
+    apiAdmin<Novedades>("/admin/novedades"),
   ]);
+  const paginas = Math.max(1, Math.ceil(lista.total / POR_PAGINA));
+  const enlace = (cambios: Record<string, string | number>) =>
+    `/admin/reservas?${new URLSearchParams({ estado, ...(buscar ? { buscar } : {}), ...Object.fromEntries(Object.entries(cambios).map(([k, v]) => [k, String(v)])) })}`;
 
   return (
     <div className="mx-auto max-w-5xl">
       <p className="text-sm text-white/60">Panel administrador</p>
       <h1 className="mt-1 font-krona text-xl text-white! md:text-2xl">Reservas</h1>
 
+      {/* Búsqueda */}
+      <form action="/admin/reservas" className="mt-6 flex gap-2">
+        <input type="hidden" name="estado" value={estado} />
+        <input
+          name="buscar"
+          defaultValue={buscar}
+          placeholder="Buscar por código, nombre o celular"
+          className="min-w-0 flex-1 rounded-xl border border-white/15 bg-white/5 px-4 py-2.5 text-base text-white outline-none placeholder:text-white/30 focus:border-[#f5c542] md:text-sm"
+        />
+        <button className="shrink-0 cursor-pointer rounded-xl border border-white/15 px-4 py-2.5 text-sm text-white hover:border-[#f5c542]">
+          Buscar
+        </button>
+      </form>
+
       {/* Filtros */}
-      <div className="-mx-4 mt-6 flex gap-2 overflow-x-auto px-4 pb-1 md:mx-0 md:px-0">
+      <div className="-mx-4 mt-4 flex gap-2 overflow-x-auto px-4 pb-1 md:mx-0 md:px-0">
         {FILTROS.map((f) => (
           <Link
             key={f.id}
-            href={`/admin/reservas?filtro=${f.id}`}
+            href={enlace({ estado: f.id, pagina: 1 })}
             className={`shrink-0 rounded-full border px-4 py-2 text-sm transition-colors ${
-              filtro === f.id
+              estado === f.id
                 ? "border-[#f5c542] bg-[#f5c542] font-semibold text-[#02152b]"
                 : "border-white/15 text-white/70 hover:border-[#f5c542]"
             }`}
           >
             {f.label}
-            {f.id === "pendientes" && totalPendientes > 0 && ` · ${totalPendientes}`}
+            {f.id === "RESERVADA" && novedades.por_confirmar > 0 && ` · ${novedades.por_confirmar}`}
           </Link>
         ))}
       </div>
 
-      {reservas.length === 0 && (
+      {lista.items.length === 0 && (
         <p className="mt-8 rounded-2xl border border-dashed border-white/15 p-8 text-center text-white/60">
-          No hay reservas en esta lista.
+          {buscar ? `No hay reservas que coincidan con "${buscar}".` : "No hay reservas en esta lista."}
         </p>
       )}
 
       {/* Tarjetas */}
       <div className="mt-6 grid gap-3 md:grid-cols-2">
-        {reservas.map((r) => {
-          const item = r.items[0];
-          const pagoInformado = r.pagos.some((p) => p.estado === "POR_VERIFICAR");
-          const estado = estadoVisible(r, pagoInformado);
-          const unidades = item?.asignaciones.map((a) => a.unidad.codigo).join(", ");
-
+        {lista.items.map((r) => {
+          const visible = estadoVisible(r);
           return (
             <Link
               key={r.id}
               href={`/admin/reservas/${r.codigo}`}
               className={`block rounded-2xl border border-white/10 bg-[#0d1b2a] p-4 transition-colors hover:border-[#f5c542]/50 ${
-                estado.urgente ? "border-l-4 border-l-amber-400" : ""
+                visible.urgente ? "border-l-4 border-l-amber-400" : ""
               }`}
             >
               <div className="flex items-center justify-between gap-3">
                 <span className="font-mono text-sm text-[#ffe9a8]">{r.codigo}</span>
-                <span className={`rounded-full px-2.5 py-0.5 text-[11px] font-semibold ${estado.clase}`}>{estado.texto}</span>
+                <span className={`rounded-full px-2.5 py-0.5 text-[11px] font-semibold ${visible.clase}`}>{visible.texto}</span>
               </div>
-              <p className="mt-2 font-semibold text-white">{r.cliente.nombre}</p>
+              <p className="mt-2 font-semibold text-white">{r.cliente_nombre}</p>
               <div className="mt-1 flex flex-wrap justify-between gap-x-4 gap-y-1 text-xs text-white/60">
-                <span>{item?.producto.nombre}</span>
-                <span className="capitalize">{fechaCorta(r.fechaInicio)}</span>
+                <span className="min-w-0 truncate">{r.productos}</span>
+                <span className="capitalize">{fechaCorta(r.fecha_inicio)}</span>
               </div>
               <div className="mt-3 flex flex-wrap justify-between gap-2 border-t border-white/10 pt-3 text-xs">
-                <span className="text-white/70">{soles(Number(r.total))}</span>
-                <span className={estado.urgente ? "text-amber-300" : "text-white/50"}>
-                  {r.estado === "PENDIENTE" ? tiempoRestante(r.expiraEn) : unidades ? `Unidad: ${unidades}` : ""}
+                <span className="text-white/70">
+                  {soles(r.total)}
+                  {r.pagado > 0 && <span className="text-emerald-300"> · pagado {soles(r.pagado)}</span>}
+                </span>
+                <span className={visible.urgente ? "text-amber-300" : "text-white/50"}>
+                  {r.estado === "RESERVADA" && !r.vencida ? tiempoRestante(r.expira_en) : ""}
                 </span>
               </div>
             </Link>
           );
         })}
       </div>
+
+      {/* Páginas */}
+      {paginas > 1 && (
+        <nav className="mt-6 flex items-center justify-center gap-3 text-sm">
+          {pagina > 1 && (
+            <Link href={enlace({ pagina: pagina - 1 })} className="rounded-xl border border-white/15 px-4 py-2 text-white/80 hover:border-[#f5c542]">
+              ‹ Anterior
+            </Link>
+          )}
+          <span className="text-white/50">
+            Página {pagina} de {paginas}
+          </span>
+          {pagina < paginas && (
+            <Link href={enlace({ pagina: pagina + 1 })} className="rounded-xl border border-white/15 px-4 py-2 text-white/80 hover:border-[#f5c542]">
+              Siguiente ›
+            </Link>
+          )}
+        </nav>
+      )}
     </div>
   );
 }

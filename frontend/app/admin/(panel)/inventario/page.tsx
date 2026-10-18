@@ -1,24 +1,29 @@
 import Link from "next/link";
-import { prisma } from "@/lib/prisma";
-import { exigirAdmin } from "@/lib/admin";
+import { redirect } from "next/navigation";
+import { apiAdmin, exigirAdmin } from "@/lib/admin";
+import { soles } from "@/lib/fechas";
+import type { CategoriaAdmin, ProductoAdmin } from "@/lib/tipos";
 import { alternarCategoria, crearUnidad } from "./actions";
 import NuevaCategoriaForm from "@/components/admin/NuevaCategoriaForm";
 import EstadoUnidadSelect from "@/components/admin/EstadoUnidadSelect";
 
-const soles = (n: number) => `S/ ${n.toFixed(2)}`;
+export const dynamic = "force-dynamic";
 
-export default async function InventarioPage() {
-  await exigirAdmin();
+type Props = { searchParams: Promise<{ ok?: string; error?: string }> };
 
-  const categorias = await prisma.categoria.findMany({
-    orderBy: { orden: "asc" },
-    include: {
-      productos: {
-        orderBy: { nombre: "asc" },
-        include: { unidades: { orderBy: { codigo: "asc" } } },
-      },
-    },
-  });
+export default async function InventarioPage({ searchParams }: Props) {
+  const usuario = await exigirAdmin();
+  if (usuario.rol !== "ADMIN") redirect("/admin"); // el inventario es solo del administrador
+  const { ok, error } = await searchParams;
+
+  const [listaCategorias, productos] = await Promise.all([
+    apiAdmin<CategoriaAdmin[]>("/admin/categorias"),
+    apiAdmin<ProductoAdmin[]>("/admin/productos"),
+  ]);
+  const categorias = listaCategorias.map((c) => ({
+    ...c,
+    productos: productos.filter((p) => p.categoria_id === c.id),
+  }));
 
   return (
     <div className="mx-auto max-w-5xl">
@@ -31,6 +36,9 @@ export default async function InventarioPage() {
           <NuevaCategoriaForm />
         </div>
       </div>
+
+      {ok && <p className="mt-6 rounded-xl border border-emerald-400/30 bg-emerald-400/10 px-4 py-3 text-sm text-emerald-200">{ok}</p>}
+      {error && <p role="alert" className="mt-6 rounded-xl border border-red-400/30 bg-red-400/10 px-4 py-3 text-sm text-red-300">{error}</p>}
 
       {categorias.length === 0 && (
         <p className="mt-10 rounded-2xl border border-dashed border-white/15 p-8 text-center text-white/60">
@@ -55,6 +63,7 @@ export default async function InventarioPage() {
               <div className="ml-auto flex gap-2">
                 <form action={alternarCategoria}>
                   <input type="hidden" name="id" value={cat.id} />
+                  <input type="hidden" name="activa" value={String(cat.activa)} />
                   <button type="submit" className="cursor-pointer rounded-xl border border-white/15 px-3 py-2 text-xs text-white/70 transition-colors hover:border-[#f5c542] hover:text-white">
                     {cat.activa ? "Ocultar" : "Mostrar"}
                   </button>
@@ -77,7 +86,7 @@ export default async function InventarioPage() {
             {/* Productos */}
             <div className="space-y-3">
               {cat.productos.map((p) => {
-                const operativas = p.unidades.filter((u) => u.estado === "OPERATIVA").length;
+                const operativas = p.unidades_por_estado.OPERATIVA;
                 return (
                   <article key={p.id} className="overflow-hidden rounded-2xl border border-white/10 bg-[#0d1b2a]">
                     <div className="flex flex-wrap items-center gap-x-4 gap-y-2 border-b border-white/10 px-4 py-3">
@@ -91,7 +100,7 @@ export default async function InventarioPage() {
                           )}
                         </h3>
                         <p className="text-xs text-white/60">
-                          {soles(Number(p.precio))} · {operativas} de {p.unidades.length} operativas
+                          {soles(p.precio)} · {operativas} de {p.unidades.length} operativas
                         </p>
                       </div>
                       <Link

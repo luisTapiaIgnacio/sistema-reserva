@@ -10,7 +10,6 @@ from app.schemas.inventario import (
     CategoriaAdmin,
     CategoriaCambios,
     CategoriaEntrada,
-    ProductoAdmin,
     ProductoCambios,
     ProductoDetalleAdmin,
     ProductoEntrada,
@@ -47,8 +46,11 @@ def cambiar_categoria(categoria_id: int, cambios: CategoriaCambios, db: Db) -> C
 # ---------- Productos ----------
 
 
-@router.get("/productos", response_model=list[ProductoAdmin])
-def listar_productos(db: Db, categoria_id: Annotated[int | None, Query(gt=0)] = None) -> list[ProductoAdmin]:
+@router.get("/productos", response_model=list[ProductoDetalleAdmin])
+def listar_productos(
+    db: Db, categoria_id: Annotated[int | None, Query(gt=0)] = None
+) -> list[ProductoDetalleAdmin]:
+    """Todos los productos (incluidos los inactivos) con sus unidades."""
     return servicio.listar_productos(db, categoria_id)
 
 

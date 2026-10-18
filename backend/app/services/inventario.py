@@ -129,7 +129,7 @@ def _obtener_producto(db: Session, producto_id: int) -> Producto:
     return producto
 
 
-def listar_productos(db: Session, categoria_id: int | None = None) -> list[ProductoAdmin]:
+def listar_productos(db: Session, categoria_id: int | None = None) -> list[ProductoDetalleAdmin]:
     consulta = (
         select(Producto)
         .options(selectinload(Producto.categoria), selectinload(Producto.unidades))
@@ -137,7 +137,7 @@ def listar_productos(db: Session, categoria_id: int | None = None) -> list[Produ
     )
     if categoria_id is not None:
         consulta = consulta.where(Producto.categoria_id == categoria_id)
-    return [_a_admin(p) for p in db.scalars(consulta).all()]
+    return [_a_admin(p, detalle=True) for p in db.scalars(consulta).all()]  # type: ignore[misc]
 
 
 def ver_producto(db: Session, producto_id: int) -> ProductoDetalleAdmin:

@@ -504,8 +504,9 @@ def test_desactivar_producto_lo_quita_de_la_web(
     assert respuesta.status_code == 200
     publicos = [p["id"] for p in client.get(f"{API}/productos").json()]
     assert catalogo["cabina"] not in publicos
-    # En el panel sigue apareciendo.
-    assert catalogo["cabina"] in [p["id"] for p in client.get(f"{ADMIN}/productos", headers=admin).json()]
+    # En el panel sigue apareciendo, con sus unidades.
+    panel = {p["id"]: p for p in client.get(f"{ADMIN}/productos", headers=admin).json()}
+    assert [u["codigo"] for u in panel[catalogo["cabina"]]["unidades"]] == ["CAB-001"]
 
 
 def test_cambiar_precio_no_afecta_reservas_hechas(

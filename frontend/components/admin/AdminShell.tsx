@@ -5,25 +5,31 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
 import { salir } from "@/app/admin/actions";
+import type { Rol } from "@/lib/tipos";
 import { useNovedades } from "./useNovedades";
 
-type ItemMenu = { href: string; label: string; icon: string; pronto?: boolean };
+type ItemMenu = { href: string; label: string; icon: string; pronto?: boolean; soloAdmin?: boolean };
 
-const MENU: ItemMenu[] = [
+const MENU_COMPLETO: ItemMenu[] = [
   { href: "/admin", label: "Resumen", icon: "fa-solid fa-chart-simple" },
   { href: "/admin/reservas", label: "Reservas", icon: "fa-regular fa-calendar-check" },
-  { href: "/admin/inventario", label: "Inventario", icon: "fa-solid fa-boxes-stacked" },
+  { href: "/admin/inventario", label: "Inventario", icon: "fa-solid fa-boxes-stacked", soloAdmin: true },
+  { href: "/admin/configuracion", label: "Ajustes", icon: "fa-solid fa-gear", soloAdmin: true },
 ];
 
-export default function AdminShell({ nombre, children }: { nombre: string; children: ReactNode }) {
+type Props = { nombre: string; rol: Rol; children: ReactNode };
+
+export default function AdminShell({ nombre, rol, children }: Props) {
   const pathname = usePathname();
   const activo = (href: string) => (href === "/admin" ? pathname === "/admin" : pathname.startsWith(href));
-  const { pendientes, avisos, permiso, pedirPermiso, cerrarAviso } = useNovedades();
+  const { porConfirmar, avisos, permiso, pedirPermiso, cerrarAviso } = useNovedades();
+  // El operador gestiona reservas; inventario y ajustes son solo del administrador
+  const MENU = MENU_COMPLETO.filter((item) => !item.soloAdmin || rol === "ADMIN");
 
-  // Número de pendientes junto a "Reservas"
+  // Reservas por confirmar junto a "Reservas"
   const insignia = (href: string) =>
-    href === "/admin/reservas" && pendientes > 0 ? (
-      <span className="ml-auto rounded-full bg-amber-400 px-2 py-0.5 text-[10px] font-bold text-[#02152b]">{pendientes}</span>
+    href === "/admin/reservas" && porConfirmar > 0 ? (
+      <span className="ml-auto rounded-full bg-amber-400 px-2 py-0.5 text-[10px] font-bold text-[#02152b]">{porConfirmar}</span>
     ) : null;
 
   return (
@@ -108,7 +114,9 @@ export default function AdminShell({ nombre, children }: { nombre: string; child
       <main className="min-w-0 flex-1 px-4 pb-28 pt-6 md:px-8 md:pb-10 md:pt-8">{children}</main>
 
       {/* ---------- Barra inferior (celular) ---------- */}
-      <nav className="fixed inset-x-0 bottom-0 z-30 grid grid-cols-3 border-t border-white/10 bg-[#02152b]/95 pb-[env(safe-area-inset-bottom)] backdrop-blur md:hidden">
+      <nav
+        style={{ gridTemplateColumns: `repeat(${MENU.length}, minmax(0, 1fr))` }}
+        className="fixed inset-x-0 bottom-0 z-30 grid border-t border-white/10 bg-[#02152b]/95 pb-[env(safe-area-inset-bottom)] backdrop-blur md:hidden">
         {MENU.map((item) => (
           <Link
             key={item.href}
@@ -120,9 +128,9 @@ export default function AdminShell({ nombre, children }: { nombre: string; child
           >
             <span className="relative">
               <i className={`${item.icon} text-base`} aria-hidden="true" />
-              {item.href === "/admin/reservas" && pendientes > 0 && (
+              {item.href === "/admin/reservas" && porConfirmar > 0 && (
                 <span className="absolute -right-3 -top-1.5 rounded-full bg-amber-400 px-1.5 text-[9px] font-bold leading-4 text-[#02152b]">
-                  {pendientes}
+                  {porConfirmar}
                 </span>
               )}
             </span>

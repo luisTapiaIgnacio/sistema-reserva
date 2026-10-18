@@ -1,11 +1,11 @@
 import Image from "next/image";
 import { redirect } from "next/navigation";
 import LoginForm from "@/components/admin/LoginForm";
-import { leerSesion } from "@/lib/sesion";
+import { usuarioActual } from "@/lib/admin";
 
 export default async function LoginPage() {
-  // Si ya inició sesión, va directo al panel
-  if (await leerSesion()) redirect("/admin");
+  // Si ya tiene una sesión válida, va directo al panel
+  if (await usuarioActual()) redirect("/admin");
 
   return (
     <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#02152b] px-5 py-12 font-poppins">

@@ -2,14 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-
-type Novedades = {
-  pendientes: number;
-  porVerificar: number;
-  ultimaReserva: { id: number; codigo: string } | null;
-  ultimoPago: { id: number; codigo: string } | null;
-  firma: string;
-};
+import type { Novedades } from "@/lib/tipos";
 
 export type Aviso = { id: number; texto: string; href: string };
 
@@ -38,7 +31,7 @@ function sonar() {
 export function useNovedades() {
   const router = useRouter();
   const anterior = useRef<Novedades | null>(null);
-  const [pendientes, setPendientes] = useState(0);
+  const [porConfirmar, setPorConfirmar] = useState(0);
   const [avisos, setAvisos] = useState<Aviso[]>([]);
   const [permiso, setPermiso] = useState<NotificationPermission | "no-soportado">("default");
 
@@ -48,7 +41,7 @@ export function useNovedades() {
       if (!r.ok) return;
       const n: Novedades = await r.json();
 
-      setPendientes(n.pendientes);
+      setPorConfirmar(n.por_confirmar);
       setPermiso("Notification" in window ? Notification.permission : "no-soportado");
 
       const prev = anterior.current;
@@ -58,18 +51,18 @@ export function useNovedades() {
       router.refresh(); // vuelve a pedir los datos de la página actual, sin recargar
 
       const nuevos: Aviso[] = [];
-      if (n.ultimaReserva && n.ultimaReserva.id !== prev.ultimaReserva?.id) {
+      if (n.ultima_reserva && n.ultima_reserva.id !== prev.ultima_reserva?.id) {
         nuevos.push({
           id: Date.now(),
-          texto: `Nueva reserva: ${n.ultimaReserva.codigo}`,
-          href: `/admin/reservas/${n.ultimaReserva.codigo}`,
+          texto: `Nueva reserva de ${n.ultima_reserva.cliente_nombre}: ${n.ultima_reserva.codigo}`,
+          href: `/admin/reservas/${n.ultima_reserva.codigo}`,
         });
       }
-      if (n.ultimoPago && n.ultimoPago.id !== prev.ultimoPago?.id) {
+      if (n.por_vencer > prev.por_vencer) {
         nuevos.push({
           id: Date.now() + 1,
-          texto: `Pago por verificar: ${n.ultimoPago.codigo}`,
-          href: `/admin/reservas/${n.ultimoPago.codigo}`,
+          texto: `${n.por_vencer} ${n.por_vencer === 1 ? "reserva vence" : "reservas vencen"} en menos de 1 hora`,
+          href: "/admin/reservas?estado=RESERVADA",
         });
       }
       if (nuevos.length === 0) return;
@@ -102,8 +95,7 @@ export function useNovedades() {
     }
   }, [router]);
 
-  
-    useEffect(() => {
+  useEffect(() => {
     const primera = setTimeout(revisar, 0); // primera revisión apenas carga
     const id = setInterval(revisar, INTERVALO);
     const alVolver = () => {
@@ -126,5 +118,5 @@ export function useNovedades() {
     setAvisos((a) => a.filter((x) => x.id !== id));
   }
 
-  return { pendientes, avisos, permiso, pedirPermiso, cerrarAviso };
+  return { porConfirmar, avisos, permiso, pedirPermiso, cerrarAviso };
 }

@@ -38,3 +38,8 @@ export function fechaLarga(texto: string) {
 }
 
 export const soles = (n: number) => `S/ ${n.toFixed(2)}`;
+
+// "sábado 15 de noviembre" o "del 15 al 17 de noviembre" para eventos de varios días
+export function rangoFechas(inicio: string, fin: string) {
+  return inicio === fin ? fechaLarga(inicio) : `del ${fechaLarga(inicio)} al ${fechaLarga(fin)}`;
+}

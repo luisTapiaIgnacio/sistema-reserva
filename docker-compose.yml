@@ -1,14 +1,35 @@
 services:
-  api:
-    build: .
-    container_name: sistema-reservas-api
-    ports:
-      - "8000:8000"
+  db:
+    image: postgres:16-alpine
+    container_name: reservas-db
     environment:
-      DATABASE_URL: "sqlite:////app/data/reservas.db"
+      POSTGRES_USER: ${POSTGRES_USER:-reservas}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-reservas}
+      POSTGRES_DB: ${POSTGRES_DB:-reservas}
+    ports:
+      - "5432:5432"
     volumes:
-      - reservas-data:/app/data
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-reservas} -d ${POSTGRES_DB:-reservas}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
     restart: unless-stopped
 
+  api:
+    build: ./backend
+    container_name: reservas-api
+    environment:
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-reservas}:${POSTGRES_PASSWORD:-reservas}@db:5432/${POSTGRES_DB:-reservas}
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+  # El servicio "web" (Next.js) se añade cuando el frontend use la API (fase 5).
+
 volumes:
-  reservas-data:
+  postgres-data:

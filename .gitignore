@@ -31,3 +31,7 @@ Thumbs.db
 
 # Base de datos SQLite local
 *.db
+
+# Node / Next.js (el frontend tiene además su propio .gitignore)
+node_modules/
+.next/

@@ -1,0 +1,138 @@
+@import url('https://fonts.googleapis.com/css2?family=Krona+One&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+@import "tailwindcss";
+
+@theme {
+  /*  Colores */
+  --color-primary: #02152b;
+  --color-primary-dark: #09217d;
+  --color-primary-light:#0054ef;
+  --color-text: #3a4f66;
+  --color-heading: #192a3d;
+  --color-pink: #c04493;
+  --color-cyan: #59c0d0;
+  --color-cyan-alt: #8bd3d9;
+  --color-teal: #1fb6ac;
+  --color-bg-light: #f2f5f7;
+  --color-bg-lighter: #fafbfc;
+
+     /* tus colores dorados */
+  --color-gold-light: #ffe9a8;
+  --color-gold: #f5c542;
+  --color-gold-dark: #c47f0a;
+
+  /* 👇 degradado dorado reutilizable (horizontal) */
+  --background-image-gradient-gold: linear-gradient(
+    90deg,
+    var(--color-gold-light) 0%,
+    var(--color-gold) 50%,
+    var(--color-gold-dark) 100%
+  );
+
+
+  /* 🔤 Fuentes */
+  --font-krona: "Krona One", sans-serif;
+  --font-poppins: "Poppins", sans-serif;
+}
+
+/* 🧱 Estilos base */
+html{
+ overflow-x: hidden;
+}
+
+body {
+  color: var(--color-text);
+  background: var(--color-bg-lighter);
+  font-family: var(--font-poppins), sans-serif;
+  line-height: 1.65;
+ overflow-x: clip;   /* 👈 "clip" NO rompe sticky, "hidden" sí puede */
+  max-width: 100%;
+}
+
+h1,
+h2 {
+  color: var(--color-primary-light);
+  font-family: var(--font-krona), sans-serif;
+}
+
+h3 {
+  font-family: var(--font-krona), sans-serif;
+}
+
+/* 🎬 Animaciones */
+@keyframes hero-zoom {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.12);
+  }
+}
+
+@keyframes hero-reveal {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ✏️ CAMBIO 1: translate3d en lugar de translateX (evita parpadeos en la unión) */
+@keyframes scroll-left {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.animate-hero-zoom {
+  animation: hero-zoom 18s ease-in-out infinite alternate;
+}
+
+.animate-hero-reveal {
+  animation: hero-reveal 1s ease-out both;
+}
+
+/* ✏️ CAMBIO 2: la duración real la pone el componente Marquee (prop speed) */
+.animate-marquee {
+  animation: scroll-left 30s linear infinite;
+  will-change: transform;
+}
+
+/* ✏️ CAMBIO 3 (nuevo): respeta a quienes desactivan las animaciones en su sistema */
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee {
+    animation: none;
+  }
+}
+
+/* 📎 Mega menú "Complementa tu Evento" en escritorio (ver Header.tsx) */
+.submenu-item::before {
+  content: "\203A";
+  position: absolute;
+  left: 0;
+  color: #d94b9b;
+  font-size: 27px;
+  font-weight: 300;
+  line-height: 1;
+}
+
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+@utility scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Destello que cruza el botón Reserva */
+@keyframes destello {
+  0% { transform: translateX(-150%) skewX(-20deg); }
+  60%, 100% { transform: translateX(350%) skewX(-20deg); }
+}

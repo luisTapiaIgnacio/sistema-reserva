@@ -12,25 +12,25 @@ const wa = (servicio: string) =>
 // 👇 Imágenes de relleno: cámbialas por las tuyas
 const ADICIONALES = [
   {
-    img: "/images/nova-btl/celebra/bautizos.jpg",
+    img: "/images/nova-btl/celebra/backingPer.jpg",
     icon: "fa-solid fa-panorama",
     titulo: "Backing personalizado",
     desc: "Fondo decorativo adaptado a la temática del evento.",
   },
   {
-    img: "/images/nova-btl/celebra/bodas.jpg",
+    img: "/images/nova-btl/celebra/album.jpg",
     icon: "fa-solid fa-book-open",
     titulo: "Álbum físico de firmas",
     desc: "Un álbum para conservar fotografías y mensajes de los invitados.",
   },
   {
-    img: "/images/nova-btl/celebra/cumple.jpg",
+    img: "/images/nova-btl/celebra/costillontem.jpg",
     icon: "fa-solid fa-hat-wizard",
     titulo: "Cotillón temático premium",
     desc: "Accesorios seleccionados según el estilo de tu celebración.",
   },
   {
-    img: "/images/nova-btl/celebra/graduacion.jpg",
+    img: "/images/nova-btl/celebra/diseñoGrafico-es.jpg",
     icon: "fa-solid fa-pen-ruler",
     titulo: "Diseño gráfico especial",
     desc: "Marcos fotográficos con nombres, fecha o identidad visual.",

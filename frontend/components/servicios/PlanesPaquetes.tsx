@@ -16,7 +16,7 @@ const PLANES = [
     horas: "2 horas de servicio",
     precio: "S/ 1,000",
     ideal: "Ideal para cumpleaños, reuniones y celebraciones íntimas.",
-    img: "/images/nova-btl/espejo-ft.jpg",
+    img: "/images/nova-btl/celebra/magicEx.jpg",
     destacado: false,
     incluye: [
       "Alquiler de espejo mágico interactivo.",
@@ -35,7 +35,7 @@ const PLANES = [
     horas: "3 horas de servicio",
     precio: "S/ 1,250",
     ideal: "Ideal para bodas, quinceañeros y graduaciones.",
-    img: "/images/nova-btl/celebra/cumple.jpg",
+    img: "/images/nova-btl/celebra/magicPremi.jpg",
     destacado: true,
     incluye: [
       "Todo lo incluido en Magic Experience 2H.",
@@ -51,7 +51,7 @@ const PLANES = [
     horas: "4 horas de servicio",
     precio: "S/ 1,500",
     ideal: "Para eventos grandes y celebraciones con una programación extensa.",
-    img: "/images/nova-btl/celebra/bodas.jpg",
+    img: "/images/nova-btl/celebra/magicLuxu.jpg",
     destacado: false,
     incluye: [
       "Todo lo incluido en Magic Experience 2H.",

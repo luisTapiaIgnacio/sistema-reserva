@@ -4,22 +4,22 @@ import Reveal from "@/components/Reveal";
 // 👇 Imágenes de relleno: cámbialas por las tuyas
 const ACCESORIOS = [
   {
-    img: "/images/nova-btl/celebra/bodas.jpg",
+    img: "/images/nova-btl/celebra/alf-roja.jpg",
     titulo: "Alfombra roja y balaustres",
     desc: "Un espacio elegante para recibir a los invitados y dar protagonismo a las fotografías.",
   },
   {
-    img: "/images/nova-btl/celebra/cumple.jpg",
+    img: "/images/nova-btl/celebra/costillon-acc.jpg",
     titulo: "Cotillón y accesorios",
     desc: "Lentes, sombreros, pelucas, letreros y props para fotografías llenas de diversión.",
   },
   {
-    img: "/images/nova-btl/espejo-ft.jpg",
+    img: "/images/nova-btl/celebra/iluminacion-led.jpg",
     titulo: "Iluminación LED",
     desc: "Iluminación complementaria para crear un ambiente fotográfico atractivo.",
   },
   {
-    img: "/images/nova-btl/celebra/bautizos.jpg",
+    img: "/images/nova-btl/celebra/ambientacion-perso.jpg",
     titulo: "Ambientación personalizada",
     desc: "Opciones para fondos y detalles decorativos de acuerdo con la temática del evento.",
   },

@@ -2,7 +2,7 @@ import Image from "next/image";
 import Reveal from "@/components/Reveal";
 
 // 👇 Imagen de relleno: cámbiala por la foto de tu espejo
-const IMAGEN = "/images/nova-btl/espejo-ft.jpg";
+const IMAGEN = "/images/nova-btl/celebra/bodas.jpg";
 
 const CARACTERISTICAS = [
   "Fotografías de cuerpo entero.",

@@ -3,7 +3,7 @@ import Link from "next/link";
 import Reveal from "@/components/Reveal";
 
 // 👇 Imagen de relleno: cámbiala por una foto de invitados con el espejo
-const IMAGEN_GALERIA = "/images/nova-btl/celebra/cumple.jpg";
+const IMAGEN_GALERIA = "/images/nova-btl/celebra/asistencia.jfif";
 
 const BENEFICIOS = [
   {

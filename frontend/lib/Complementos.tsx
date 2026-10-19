@@ -18,9 +18,9 @@ export const COMPLEMENTOS: Complemento[] = [
     slug: "carritos-snacks-y-catering",
     titulo: "Carritos Snacks y Catering",
     descripcion:
-      "Carritos y estaciones de snacks con una selección gourmet de quesos, embutidos, frutos secos y aperitivos para sorprender a tus invitados.",
+      "Complementa tu celebración con carritos de snacks y opciones de catering para ofrecer a tus invitados una experiencia adicional. Las alternativas pueden adaptarse al estilo y temática de tu evento.",
     imagen: "/images/nova-btl/complementarios.jpg",
-    imagenDetalle: "/images/nova-btl/complementarios-2.jpg",
+    imagenDetalle: "/images/nova-btl/complementarios.jpg",
     detalle: [
       "El carrito snack de Miranda ofrece una experiencia gastronómica diferente, ideal para eventos corporativos, bodas, ferias, activaciones y celebraciones donde se busca brindar un servicio elegante y de alta calidad.",
       "Nuestra estación gourmet reúne una cuidada selección de quesos, embutidos, frutos secos, galletas artesanales y otros aperitivos premium, presentados de forma atractiva para que cada invitado disfrute de una experiencia única.",
@@ -43,78 +43,286 @@ export const COMPLEMENTOS: Complemento[] = [
     slug: "ticket-ejecutivo-corporativo",
     titulo: "Ticket Ejecutivo Corporativo",
     descripcion:
-      "Una experiencia ejecutiva pensada para eventos de empresa, con atención y detalles a la altura de tu marca.",
+      "Una alternativa de presentación ejecutiva para eventos empresariales, activaciones de marca y celebraciones corporativas, con una propuesta personalizada de acuerdo con la identidad de tu empresa.",
     imagen: "/images/nova-btl/complementarios-2.jpg",
+    imagenDetalle: "/images/nova-btl/complementarios.jpg",
+    detalle: [
+      "El carrito snack de Miranda ofrece una experiencia gastronómica diferente, ideal para eventos corporativos, bodas, ferias, activaciones y celebraciones donde se busca brindar un servicio elegante y de alta calidad.",
+      "Nuestra estación gourmet reúne una cuidada selección de quesos, embutidos, frutos secos, galletas artesanales y otros aperitivos premium, presentados de forma atractiva para que cada invitado disfrute de una experiencia única.",
+      "Además de complementar la decoración, el carrito snack fomenta la interacción entre los asistentes y aporta un toque sofisticado a cualquier celebración.",
+    ],
+    incluye: [
+      "Selección de 12 snacks gourmet",
+      "Quesos, embutidos y charcutería premium",
+      "Frutos secos, galletas y aperitivos variados",
+      "Presentación elegante tipo estación gourmet",
+      "Personal de atención durante el servicio",
+     
+    ],
+     galeria: [
+      "/images/nova-btl/complementarios-3.jpg",
+      "/images/nova-btl/complementarios-2.jpg",
+    ],
   },
   {
     slug: "personalizacion-de-merchandising",
     titulo: "Personalización de Merchandising",
     descripcion:
-      "Productos personalizados con tu logo o temática para que tus invitados se lleven un recuerdo del evento.",
+      "Artículos personalizados con nombres, logotipos, fechas o diseños especiales para tus invitados, clientes o colaboradores. Una alternativa ideal para celebraciones sociales y eventos corporativos.",
     imagen: "/images/nova-btl/complementarios-3.jpg",
+     imagenDetalle: "/images/nova-btl/complementarios.jpg",
+    detalle: [
+      "El carrito snack de Miranda ofrece una experiencia gastronómica diferente, ideal para eventos corporativos, bodas, ferias, activaciones y celebraciones donde se busca brindar un servicio elegante y de alta calidad.",
+      "Nuestra estación gourmet reúne una cuidada selección de quesos, embutidos, frutos secos, galletas artesanales y otros aperitivos premium, presentados de forma atractiva para que cada invitado disfrute de una experiencia única.",
+      "Además de complementar la decoración, el carrito snack fomenta la interacción entre los asistentes y aporta un toque sofisticado a cualquier celebración.",
+    ],
+    incluye: [
+      "Selección de 12 snacks gourmet",
+      "Quesos, embutidos y charcutería premium",
+      "Frutos secos, galletas y aperitivos variados",
+      "Presentación elegante tipo estación gourmet",
+      "Personal de atención durante el servicio",
+     
+    ],
+     galeria: [
+      "/images/nova-btl/complementarios-3.jpg",
+      "/images/nova-btl/complementarios-2.jpg",
+       
+    ],
   },
   {
     slug: "plataforma-360",
     titulo: "Plataforma 360°",
     descripcion:
-      "Videos en cámara lenta 360° listos para compartir en redes, personalizados con la identidad de tu evento.",
-    imagen: "/images/nova-btl/complementarios-4.jpg",
+      "Una experiencia audiovisual interactiva que permite capturar videos dinámicos de los invitados desde distintos ángulos, creando contenido especial para compartir y recordar.",
+    imagen: "/images/nova-btl/celebra/plataforma360.jfif",
+     imagenDetalle: "/images/nova-btl/complementarios.jpg",
+    detalle: [
+      "El carrito snack de Miranda ofrece una experiencia gastronómica diferente, ideal para eventos corporativos, bodas, ferias, activaciones y celebraciones donde se busca brindar un servicio elegante y de alta calidad.",
+      "Nuestra estación gourmet reúne una cuidada selección de quesos, embutidos, frutos secos, galletas artesanales y otros aperitivos premium, presentados de forma atractiva para que cada invitado disfrute de una experiencia única.",
+      "Además de complementar la decoración, el carrito snack fomenta la interacción entre los asistentes y aporta un toque sofisticado a cualquier celebración.",
+    ],
+    incluye: [
+      "Selección de 12 snacks gourmet",
+      "Quesos, embutidos y charcutería premium",
+      "Frutos secos, galletas y aperitivos variados",
+      "Presentación elegante tipo estación gourmet",
+      "Personal de atención durante el servicio",
+     
+    ],
+     galeria: [
+      "/images/nova-btl/complementarios-3.jpg",
+      "/images/nova-btl/complementarios-2.jpg",
+       
+    ],
   },
   {
     slug: "aro-360",
     titulo: "Aro 360°",
     descripcion:
-      "Un aro giratorio que captura videos dinámicos y divertidos desde todos los ángulos.",
+      "Una experiencia audiovisual en la que los invitados pueden posar mientras una cámara gira a su alrededor, creando videos dinámicos para compartir y conservar como recuerdo..",
     imagen: "/images/nova-btl/complementarios-5.jpg",
+     imagenDetalle: "/images/nova-btl/complementarios.jpg",
+    detalle: [
+      "El carrito snack de Miranda ofrece una experiencia gastronómica diferente, ideal para eventos corporativos, bodas, ferias, activaciones y celebraciones donde se busca brindar un servicio elegante y de alta calidad.",
+      "Nuestra estación gourmet reúne una cuidada selección de quesos, embutidos, frutos secos, galletas artesanales y otros aperitivos premium, presentados de forma atractiva para que cada invitado disfrute de una experiencia única.",
+      "Además de complementar la decoración, el carrito snack fomenta la interacción entre los asistentes y aporta un toque sofisticado a cualquier celebración.",
+    ],
+    incluye: [
+      "Selección de 12 snacks gourmet",
+      "Quesos, embutidos y charcutería premium",
+      "Frutos secos, galletas y aperitivos variados",
+      "Presentación elegante tipo estación gourmet",
+      "Personal de atención durante el servicio",
+     
+    ],
+     galeria: [
+      "/images/nova-btl/complementarios-3.jpg",
+      "/images/nova-btl/complementarios-2.jpg",
+       
+    ],
   },
   {
     slug: "guia-pre-evento",
     titulo: "Guía Pre-Evento",
     descripcion:
-      "Te acompañamos antes del evento para coordinar cada detalle y que todo salga según lo planeado.",
+      "Orientación y coordinación previa para organizar los detalles del servicio, planificar la instalación y preparar la experiencia para el día de tu evento.",
     imagen: "/images/nova-btl/complementarios-6.jpg",
+     imagenDetalle: "/images/nova-btl/complementarios.jpg",
+    detalle: [
+      "El carrito snack de Miranda ofrece una experiencia gastronómica diferente, ideal para eventos corporativos, bodas, ferias, activaciones y celebraciones donde se busca brindar un servicio elegante y de alta calidad.",
+      "Nuestra estación gourmet reúne una cuidada selección de quesos, embutidos, frutos secos, galletas artesanales y otros aperitivos premium, presentados de forma atractiva para que cada invitado disfrute de una experiencia única.",
+      "Además de complementar la decoración, el carrito snack fomenta la interacción entre los asistentes y aporta un toque sofisticado a cualquier celebración.",
+    ],
+    incluye: [
+      "Selección de 12 snacks gourmet",
+      "Quesos, embutidos y charcutería premium",
+      "Frutos secos, galletas y aperitivos variados",
+      "Presentación elegante tipo estación gourmet",
+      "Personal de atención durante el servicio",
+     
+    ],
+     galeria: [
+      "/images/nova-btl/complementarios-3.jpg",
+      "/images/nova-btl/complementarios-2.jpg",
+       
+    ],
   },
   {
     slug: "directivo",
     titulo: "Directivo",
     descripcion:
-      "Servicio pensado para reuniones directivas y eventos ejecutivos que requieren una atención especial.",
+      "Contenido gráfico personalizado para comunicar y promocionar tu evento, con diseños adaptados a la identidad de tu celebración, empresa o marca.",
     imagen: "/images/nova-btl/complementarios.jpg",
+     imagenDetalle: "/images/nova-btl/complementarios.jpg",
+    detalle: [
+      "El carrito snack de Miranda ofrece una experiencia gastronómica diferente, ideal para eventos corporativos, bodas, ferias, activaciones y celebraciones donde se busca brindar un servicio elegante y de alta calidad.",
+      "Nuestra estación gourmet reúne una cuidada selección de quesos, embutidos, frutos secos, galletas artesanales y otros aperitivos premium, presentados de forma atractiva para que cada invitado disfrute de una experiencia única.",
+      "Además de complementar la decoración, el carrito snack fomenta la interacción entre los asistentes y aporta un toque sofisticado a cualquier celebración.",
+    ],
+    incluye: [
+      "Selección de 12 snacks gourmet",
+      "Quesos, embutidos y charcutería premium",
+      "Frutos secos, galletas y aperitivos variados",
+      "Presentación elegante tipo estación gourmet",
+      "Personal de atención durante el servicio",
+     
+    ],
+     galeria: [
+      "/images/nova-btl/complementarios-3.jpg",
+      "/images/nova-btl/complementarios-2.jpg",
+       
+    ],
   },
   {
     slug: "robot-led",
     titulo: "Robot LED",
     descripcion:
-      "Show de robot con luces LED que llena de energía la pista de baile en el momento más esperado.",
+      "Un espectáculo visual con un robot iluminado que aporta entretenimiento, energía y una presencia llamativa a tu evento, sorprendiendo a todos tus invitados.",
     imagen: "/images/nova-btl/complementarios-2.jpg",
+     imagenDetalle: "/images/nova-btl/complementarios.jpg",
+    detalle: [
+      "El carrito snack de Miranda ofrece una experiencia gastronómica diferente, ideal para eventos corporativos, bodas, ferias, activaciones y celebraciones donde se busca brindar un servicio elegante y de alta calidad.",
+      "Nuestra estación gourmet reúne una cuidada selección de quesos, embutidos, frutos secos, galletas artesanales y otros aperitivos premium, presentados de forma atractiva para que cada invitado disfrute de una experiencia única.",
+      "Además de complementar la decoración, el carrito snack fomenta la interacción entre los asistentes y aporta un toque sofisticado a cualquier celebración.",
+    ],
+    incluye: [
+      "Selección de 12 snacks gourmet",
+      "Quesos, embutidos y charcutería premium",
+      "Frutos secos, galletas y aperitivos variados",
+      "Presentación elegante tipo estación gourmet",
+      "Personal de atención durante el servicio",
+     
+    ],
+     galeria: [
+      "/images/nova-btl/complementarios-3.jpg",
+      "/images/nova-btl/complementarios-2.jpg",
+       
+    ],
   },
   {
     slug: "libro-de-recuerdos",
     titulo: "Libro de Recuerdos",
     descripcion:
-      "Un álbum para conservar fotografías y mensajes de tus invitados como recuerdo del evento.",
+      "Un complemento para reunir fotografías, dedicatorias y mensajes de los invitados, creando un recuerdo especial de la celebración.",
     imagen: "/images/nova-btl/complementarios-3.jpg",
+     imagenDetalle: "/images/nova-btl/complementarios.jpg",
+    detalle: [
+      "El carrito snack de Miranda ofrece una experiencia gastronómica diferente, ideal para eventos corporativos, bodas, ferias, activaciones y celebraciones donde se busca brindar un servicio elegante y de alta calidad.",
+      "Nuestra estación gourmet reúne una cuidada selección de quesos, embutidos, frutos secos, galletas artesanales y otros aperitivos premium, presentados de forma atractiva para que cada invitado disfrute de una experiencia única.",
+      "Además de complementar la decoración, el carrito snack fomenta la interacción entre los asistentes y aporta un toque sofisticado a cualquier celebración.",
+    ],
+    incluye: [
+      "Selección de 12 snacks gourmet",
+      "Quesos, embutidos y charcutería premium",
+      "Frutos secos, galletas y aperitivos variados",
+      "Presentación elegante tipo estación gourmet",
+      "Personal de atención durante el servicio",
+     
+    ],
+     galeria: [
+      "/images/nova-btl/complementarios-3.jpg",
+      "/images/nova-btl/complementarios-2.jpg",
+       
+    ],
   },
   {
     slug: "espejo-magico",
     titulo: "Espejo Mágico",
     descripcion:
-      "Un espejo fotográfico interactivo de cuerpo entero que aporta entretenimiento y elegancia a tu celebración.",
+      "Una experiencia fotográfica interactiva que permite a tus invitados posar, divertirse y capturar fotografías especiales, convirtiendo cada momento en un recuerdo inolvidable.",
     imagen: "/images/nova-btl/complementarios-4.jpg",
+     imagenDetalle: "/images/nova-btl/complementarios.jpg",
+    detalle: [
+      "El carrito snack de Miranda ofrece una experiencia gastronómica diferente, ideal para eventos corporativos, bodas, ferias, activaciones y celebraciones donde se busca brindar un servicio elegante y de alta calidad.",
+      "Nuestra estación gourmet reúne una cuidada selección de quesos, embutidos, frutos secos, galletas artesanales y otros aperitivos premium, presentados de forma atractiva para que cada invitado disfrute de una experiencia única.",
+      "Además de complementar la decoración, el carrito snack fomenta la interacción entre los asistentes y aporta un toque sofisticado a cualquier celebración.",
+    ],
+    incluye: [
+      "Selección de 12 snacks gourmet",
+      "Quesos, embutidos y charcutería premium",
+      "Frutos secos, galletas y aperitivos variados",
+      "Presentación elegante tipo estación gourmet",
+      "Personal de atención durante el servicio",
+     
+    ],
+     galeria: [
+      "/images/nova-btl/complementarios-3.jpg",
+      "/images/nova-btl/complementarios-2.jpg",
+       
+    ],
   },
   {
     slug: "fotos-instantaneas",
     titulo: "Fotos Instantáneas",
     descripcion:
-      "Fotografías impresas al momento para que cada invitado se lleve un recuerdo físico del evento.",
+      "Fotografías impresas al momento para que tus invitados puedan llevarse un recuerdo físico de la celebración y conservar esos momentos especiales.",
     imagen: "/images/nova-btl/complementarios-5.jpg",
+     imagenDetalle: "/images/nova-btl/complementarios.jpg",
+    detalle: [
+      "El carrito snack de Miranda ofrece una experiencia gastronómica diferente, ideal para eventos corporativos, bodas, ferias, activaciones y celebraciones donde se busca brindar un servicio elegante y de alta calidad.",
+      "Nuestra estación gourmet reúne una cuidada selección de quesos, embutidos, frutos secos, galletas artesanales y otros aperitivos premium, presentados de forma atractiva para que cada invitado disfrute de una experiencia única.",
+      "Además de complementar la decoración, el carrito snack fomenta la interacción entre los asistentes y aporta un toque sofisticado a cualquier celebración.",
+    ],
+    incluye: [
+      "Selección de 12 snacks gourmet",
+      "Quesos, embutidos y charcutería premium",
+      "Frutos secos, galletas y aperitivos variados",
+      "Presentación elegante tipo estación gourmet",
+      "Personal de atención durante el servicio",
+     
+    ],
+     galeria: [
+      "/images/nova-btl/complementarios-3.jpg",
+      "/images/nova-btl/complementarios-2.jpg",
+       
+    ],
   },
   {
     slug: "fondos-personalizados",
     titulo: "Fondos Personalizados",
     descripcion:
-      "Fondos decorativos adaptados a la temática de tu evento para fotografías únicas.",
+      "Un fondo decorativo adaptado a la temática, los colores, los nombres o la identidad visual de tu evento, ideal para complementar el espacio fotográfico.",
     imagen: "/images/nova-btl/complementarios-6.jpg",
+     imagenDetalle: "/images/nova-btl/complementarios.jpg",
+    detalle: [
+      "El carrito snack de Miranda ofrece una experiencia gastronómica diferente, ideal para eventos corporativos, bodas, ferias, activaciones y celebraciones donde se busca brindar un servicio elegante y de alta calidad.",
+      "Nuestra estación gourmet reúne una cuidada selección de quesos, embutidos, frutos secos, galletas artesanales y otros aperitivos premium, presentados de forma atractiva para que cada invitado disfrute de una experiencia única.",
+      "Además de complementar la decoración, el carrito snack fomenta la interacción entre los asistentes y aporta un toque sofisticado a cualquier celebración.",
+    ],
+    incluye: [
+      "Selección de 12 snacks gourmet",
+      "Quesos, embutidos y charcutería premium",
+      "Frutos secos, galletas y aperitivos variados",
+      "Presentación elegante tipo estación gourmet",
+      "Personal de atención durante el servicio",
+     
+    ],
+     galeria: [
+      "/images/nova-btl/complementarios-3.jpg",
+      "/images/nova-btl/complementarios-2.jpg",
+       
+    ],
   },
 ];
 

@@ -15,7 +15,7 @@ const SUBMENU_COMPLEMENTA = [
   { label: "Plataforma 360°", href: "/complementa_evento/plataforma-360" },
   { label: "Aro 360°", href: "/complementa_evento/aro-360" },
   { label: "Guía Pre-Evento", href: "/complementa_evento/guia-pre-evento" },
-  { label: "Directivo", href: "/complementa_evento/directivo" },
+  { label: "Posts Directivo", href: "/complementa_evento/directivo" },
   { label: "Robot LED", href: "/complementa_evento/robot-led" },
   { label: "Libro de Recuerdos", href: "/complementa_evento/libro-de-recuerdos" },
   { label: "Espejo Mágico", href: "/complementa_evento/espejo-magico" },

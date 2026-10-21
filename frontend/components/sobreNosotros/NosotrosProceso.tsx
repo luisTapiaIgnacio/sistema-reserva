@@ -3,32 +3,32 @@ import Reveal from "@/components/Reveal";
 
 const PASOS = [
   {
-    titulo: "Conocemos tu evento",
-    texto: "Nos cuentas el tipo de celebración, la fecha y el estilo que buscas para recomendarte el espejo ideal.",
+    titulo: "Nos cuentas tu idea",
+    texto: "Conocemos el tipo de evento que estás organizando, tus preferencias y lo que deseas ofrecer a tus invitados",
   },
   {
-    titulo: "Diseñamos la experiencia",
-    texto: "Personalizamos marcos, animaciones y mensajes con la temática de tu evento o la identidad de tu marca.",
+    titulo: "Preparamos tu experiencia",
+    texto: "Coordinamos el servicio, los detalles de presentación y los complementos que desees incorporar, de acuerdo con la disponibilidad.",
   },
   {
-    titulo: "Montamos y acompañamos",
-    texto: "Llegamos a tiempo, instalamos el equipo y te acompañamos durante todo el servicio contratado.",
+    titulo: "Llegamos a tu celebración",
+    texto: "Organizamos la instalación según lo acordado y preparamos el espacio para que los invitados puedan participar.",
   },
   {
-    titulo: "Entregamos los recuerdos",
-    texto: "Tus invitados se llevan sus fotos y tú recibes el material del evento para revivirlo cuando quieras.",
+    titulo: "El momento se convierte en recuerdo",
+    texto: "Los invitados disfrutan de la experiencia y crean fotografías y momentos especiales para conservar.",
   },
 ];
 
 export default function NosotrosProceso() {
   return (
-    <section className="relative overflow-hidden bg-gradient-to-b from-[#f2f5f7] to-[#fafbfc] px-5 py-20 font-poppins text-[#3a4f66] md:py-28">
+    <section className="relative overflow-hidden bg-gradient-to-b from-[#f2f5f7] to-[#fafbfc] px-5 py-10 font-poppins text-[#3a4f66] md:py-20">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(rgba(2,21,43,0.07)_1px,transparent_1px)] bg-[length:24px_24px]" />
 
       <div className="relative z-10 mx-auto max-w-[1150px]">
         <Reveal>
           <h2 className="text-center font-krona text-2xl leading-tight text-[#192a3d]! md:text-4xl">
-            Así llevamos tu evento de la idea a la <span className="text-[#c47f0a]">celebración</span>
+            De la planificación a un  <span className="text-[#c47f0a]">recuerdo inolvidable</span>
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-center text-base leading-relaxed">
             Un proceso claro y cuidado en cada etapa para que tu experiencia salga tal como la imaginaste.

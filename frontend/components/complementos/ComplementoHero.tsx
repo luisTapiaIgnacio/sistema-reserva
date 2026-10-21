@@ -13,15 +13,9 @@ export default function ComplementoHero({ complemento }: { complemento: Compleme
 
   return (
     <section className="relative overflow-hidden bg-[#02152b] font-poppins text-white">
-      {/* Patrón de puntitos (muy suave) */}
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(rgba(255,255,255,0.06)_1px,transparent_1px)] bg-[length:24px_24px]" />
-
-      {/* Destellos de color bajos */}
-      <div className="pointer-events-none absolute -left-20 -top-20 h-80 w-80 rounded-full bg-[#f5c542]/10 blur-3xl" />
-      <div className="pointer-events-none absolute bottom-0 left-1/3 h-96 w-96 rounded-full bg-[#0054ef]/15 blur-3xl" />
-
-      {/* Imagen a la derecha (en escritorio) con degradado hacia el texto */}
-      <div className="relative h-[320px] w-full sm:h-[420px] lg:absolute lg:inset-y-0 lg:right-0 lg:h-auto lg:w-[55%]">
+      {/* Imagen a la derecha (en escritorio). La máscara la vuelve transparente hacia el texto,
+          así se funde con el fondo real y no queda una línea donde empieza la imagen */}
+      <div className="relative h-[320px] w-full [mask-image:linear-gradient(to_bottom,black_55%,transparent)] sm:h-[420px] lg:absolute lg:inset-y-0 lg:right-0 lg:h-auto lg:w-[55%] lg:[mask-image:linear-gradient(to_right,transparent,black_70%)]">
         <Image
           src={imagen}
           alt={titulo}
@@ -30,9 +24,14 @@ export default function ComplementoHero({ complemento }: { complemento: Compleme
           sizes="(max-width: 1024px) 100vw, 55vw"
           className="object-cover"
         />
-        {/* Degradado: abajo en celular, a la izquierda en escritorio */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#02152b] via-[#02152b]/30 to-transparent lg:bg-gradient-to-r lg:from-[#02152b] lg:via-[#02152b]/40" />
       </div>
+
+      {/* Patrón de puntitos (muy suave), encima de la imagen para que cubra toda la sección */}
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(rgba(255,255,255,0.06)_1px,transparent_1px)] bg-[length:24px_24px]" />
+
+      {/* Destellos de color bajos */}
+      <div className="pointer-events-none absolute -left-20 -top-20 h-80 w-80 rounded-full bg-[#f5c542]/10 blur-3xl" />
+      <div className="pointer-events-none absolute bottom-0 left-1/3 h-96 w-96 rounded-full bg-[#0054ef]/15 blur-3xl" />
 
       {/* Contenido */}
       <div className="relative z-10 mx-auto flex max-w-[1290px] px-5 pb-20 lg:min-h-[640px] lg:items-center lg:py-24">

@@ -58,23 +58,28 @@ export default function ComplementoDescripcion({ complemento }: { complemento: C
               </div>
             </Reveal>
 
-            <div className="mt-12 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+            {/* Flex centrado (no grid) para que una fila incompleta quede al medio */}
+            <div className="mt-12 flex flex-wrap justify-center gap-4">
               {incluye.map((item, i) => (
-                <Reveal key={item} delay={i * 100} className="h-full">
+                <Reveal
+                  key={item}
+                  delay={i * 100}
+                  className="w-[calc((100%-1rem)/2)] sm:w-[calc((100%-2rem)/3)] lg:w-[calc((100%-5rem)/6)]"
+                >
                   <div
                     className="
                       group flex h-full flex-col items-center rounded-2xl
-                      border border-[#02152b]/[0.08] bg-white px-4 py-7 text-center
-                      shadow-[0_12px_30px_-10px_rgba(2,21,43,0.15)]
+                      border border-white/10 bg-gradient-to-br from-[#0a3d7a] via-[#062a55] to-[#02152b] px-4 py-7 text-center
+                      shadow-[0_12px_30px_-10px_rgba(2,21,43,0.45)]
                       transition-all duration-300
                       hover:-translate-y-1.5 hover:border-[#f5c542]
                       hover:shadow-[0_20px_35px_-10px_rgba(245,197,66,0.3)]
                     "
                   >
-                    <span className="flex h-12 w-12 items-center justify-center rounded-full bg-[#fff3cf] text-xl text-[#c47f0a] transition-all duration-300 group-hover:bg-[#f5c542] group-hover:text-[#02152b]">
+                    <span className="flex h-12 w-12 items-center justify-center rounded-full bg-[#f5c542]/15 text-xl text-[#f5c542] transition-all duration-300 group-hover:bg-[#f5c542] group-hover:text-[#02152b]">
                       <i className="fa-solid fa-check" aria-hidden="true" />
                     </span>
-                    <p className="mt-4 text-sm font-medium leading-snug text-[#192a3d]">
+                    <p className="mt-4 text-sm font-medium leading-snug text-white">
                       {item}
                     </p>
                   </div>

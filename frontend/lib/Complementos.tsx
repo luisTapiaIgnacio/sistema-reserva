@@ -20,7 +20,6 @@ export const COMPLEMENTOS: Complemento[] = [
     descripcion:
       "Complementa tu celebración con carritos de snacks y opciones de catering para ofrecer a tus invitados una experiencia adicional. Las alternativas pueden adaptarse al estilo y temática de tu evento.",
     imagen: "/images/complemento-img/carito.png",
-    imagenDetalle: "/images/nova-btl/complementarios.jpg",
     detalle: [
       "El carrito snack de Miranda ofrece una experiencia gastronómica diferente, ideal para eventos corporativos, bodas, ferias, activaciones y celebraciones donde se busca brindar un servicio elegante y de alta calidad.",
       "Nuestra estación gourmet reúne una cuidada selección de quesos, embutidos, frutos secos, galletas artesanales y otros aperitivos premium, presentados de forma atractiva para que cada invitado disfrute de una experiencia única.",
@@ -45,7 +44,6 @@ export const COMPLEMENTOS: Complemento[] = [
     descripcion:
       "Una alternativa de presentación ejecutiva para eventos empresariales, activaciones de marca y celebraciones corporativas, con una propuesta personalizada de acuerdo con la identidad de tu empresa.",
     imagen: "/images/nova-btl/complementarios-2.jpg",
-    imagenDetalle: "/images/nova-btl/complementarios.jpg",
     detalle: [
       "En MIRANDA EVENTS, ofrecemos el servicio de Ticket Ejecutivo Corporativo, una propuesta de presentación personalizada ideal para eventos empresariales, activaciones BTL, lanzamientos de productos, ferias comerciales y celebraciones corporativas. Diseñamos una experiencia alineada con la identidad visual de tu empresa, cuidando cada detalle para transmitir profesionalismo, elegancia y una imagen de marca memorable.",
 "Nuestra propuesta se adapta a las necesidades de cada organización, incorporando elementos visuales y detalles personalizados que refuerzan la presencia de tu marca, generan una presentación diferenciada y contribuyen a crear una experiencia especial para tus invitados, clientes y colaboradores.",
@@ -69,7 +67,6 @@ export const COMPLEMENTOS: Complemento[] = [
     descripcion:
       "Artículos personalizados con nombres, logotipos, fechas o diseños especiales para tus invitados, clientes o colaboradores. Una alternativa ideal para celebraciones sociales y eventos corporativos.",
     imagen: "/images/nova-btl/complementarios-3.jpg",
-     imagenDetalle: "/images/nova-btl/complementarios.jpg",
     detalle: [
       "Los Souvenirs Corporativos de MIRANDA EVENTS son una excelente herramienta para reforzar el posicionamiento de tu marca y agradecer la participación de clientes, colaboradores e invitados en eventos empresariales, ferias, congresos, activaciones BTL y lanzamientos de productos.",
 
@@ -98,7 +95,6 @@ export const COMPLEMENTOS: Complemento[] = [
     descripcion:
       "Una experiencia audiovisual interactiva que permite capturar videos dinámicos de los invitados desde distintos ángulos, creando contenido especial para compartir y recordar.",
     imagen: "/images/nova-btl/celebra/plataforma360.jfif",
-     imagenDetalle: "/images/nova-btl/complementarios.jpg",
     detalle: [
       "La Plataforma 360° es una de las experiencias más solicitadas para eventos corporativos, activaciones BTL, ferias y lanzamientos de marca. Permite a los asistentes grabar videos dinámicos mientras una cámara gira alrededor de ellos, generando contenido atractivo y listo para compartir en redes sociales.",
 
@@ -125,8 +121,7 @@ export const COMPLEMENTOS: Complemento[] = [
     titulo: "Aro 360°",
     descripcion:
       "Una experiencia audiovisual en la que los invitados pueden posar mientras una cámara gira a su alrededor, creando videos dinámicos para compartir y conservar como recuerdo..",
-    imagen: "/images/nova-btl/complementarios-5.jpg",
-     imagenDetalle: "/images/nova-btl/complementarios.jpg",
+    imagen: "/images/complemento-img/aro-360.png",
      detalle: [
       "¡Lleva tu evento al siguiente nivel con el Aro 360° de MIRANDA EVENTS! Una experiencia innovadora que combina iluminación, movimiento y tecnología para crear videos espectaculares, captar todas las miradas y convertir cada momento en un recuerdo inolvidable.",
       "Ideal para eventos corporativos, activaciones BTL, ferias, lanzamientos de marca, bodas, cumpleaños y celebraciones especiales. Nuestro Aro 360° permite a tus invitados protagonizar videos dinámicos y originales, perfectos para compartir en redes sociales y hacer que tu evento destaque mucho más allá del lugar donde se realiza.",
@@ -153,7 +148,6 @@ export const COMPLEMENTOS: Complemento[] = [
     descripcion:
       "Orientación y coordinación previa para organizar los detalles del servicio, planificar la instalación y preparar la experiencia para el día de tu evento.",
     imagen: "/images/nova-btl/complementarios-6.jpg",
-     imagenDetalle: "/images/nova-btl/complementarios.jpg",
     detalle: [
       "¡Cada gran experiencia comienza con una buena planificación!",
 "En MIRANDA EVENTS, te acompañamos desde el primer momento para que cada detalle de nuestro servicio esté organizado y listo para sorprender en tu evento. Brindamos orientación y coordinación previa para conocer tus necesidades, definir los detalles del servicio, planificar la instalación y preparar una experiencia que se adapte al estilo de tu celebración.",
@@ -179,8 +173,7 @@ export const COMPLEMENTOS: Complemento[] = [
     titulo: "Post Directivo",
     descripcion:
       "Contenido gráfico personalizado para comunicar y promocionar tu evento, con diseños adaptados a la identidad de tu celebración, empresa o marca.",
-    imagen: "/images/nova-btl/complementarios.jpg",
-     imagenDetalle: "/images/nova-btl/complementarios.jpg",
+    imagen: "/images/complemento-img/post-directivo.png",
     detalle: [
       "¡Comunica, impacta y haz que tu evento destaque desde el primer vistazo!",
 
@@ -209,8 +202,7 @@ export const COMPLEMENTOS: Complemento[] = [
     titulo: "Robot LED",
     descripcion:
       "Un espectáculo visual con un robot iluminado que aporta entretenimiento, energía y una presencia llamativa a tu evento, sorprendiendo a todos tus invitados.",
-    imagen: "/images/nova-btl/complementarios-2.jpg",
-     imagenDetalle: "/images/nova-btl/complementarios.jpg",
+    imagen: "/images/complemento-img/robot-led.png",
     detalle: [
       "Los Robots LED son una de las atracciones más llamativas para eventos sociales, corporativos, activaciones BTL y celebraciones de gran impacto. Gracias a su impresionante iluminación, coreografías y efectos visuales, captan la atención de todos los asistentes desde el primer momento.",
 
@@ -239,7 +231,6 @@ export const COMPLEMENTOS: Complemento[] = [
     descripcion:
       "Un complemento para reunir fotografías, dedicatorias y mensajes de los invitados, creando un recuerdo especial de la celebración.",
     imagen: "/images/nova-btl/complementarios-3.jpg",
-     imagenDetalle: "/images/nova-btl/complementarios.jpg",
     detalle: [
       "El Libro de Recuerdos es el complemento perfecto para bodas, cumpleaños, aniversarios, quinceañeros y todo tipo de celebraciones especiales. Permite reunir fotografías, dedicatorias, mensajes y palabras llenas de cariño de tus invitados, creando un recuerdo único que podrás conservar y revivir con el paso del tiempo.",
 "En MIRANDA EVENTS, transformamos los pequeños detalles en grandes recuerdos, ofreciéndote una forma especial de conservar las emociones, sonrisas y buenos deseos de las personas que comparten contigo ese día tan importante.",
@@ -264,8 +255,7 @@ export const COMPLEMENTOS: Complemento[] = [
     titulo: "Espejo Mágico",
     descripcion:
       "Una experiencia fotográfica interactiva que permite a tus invitados posar, divertirse y capturar fotografías especiales, convirtiendo cada momento en un recuerdo inolvidable.",
-    imagen: "/images/nova-btl/complementarios-4.jpg",
-     imagenDetalle: "/images/nova-btl/complementarios.jpg",
+    imagen: "/images/complemento-img/espejo-magico.png",
     detalle: [
       "El Espejo Mágico transforma la experiencia tradicional de las fotografías en una actividad interactiva y entretenida para invitados de todas las edades. Gracias a su pantalla táctil de cuerpo completo, los asistentes pueden posar, interactuar con animaciones y obtener fotografías personalizadas al instante.",
 
@@ -294,7 +284,6 @@ export const COMPLEMENTOS: Complemento[] = [
     descripcion:
       "Fotografías impresas al momento para que tus invitados puedan llevarse un recuerdo físico de la celebración y conservar esos momentos especiales.",
     imagen: "/images/nova-btl/complementarios-5.jpg",
-     imagenDetalle: "/images/nova-btl/complementarios.jpg",
     detalle: [
       "¡Captura la magia del momento y llévate un recuerdo que puedas tocar, compartir y conservar para siempre!",
       "En MIRANDA EVENTS, hacemos que los mejores momentos de tu celebración se conviertan en recuerdos tangibles. Nuestro servicio de Fotos Instantáneas permite capturar e imprimir fotografías al momento, para que tus invitados se lleven a casa un detalle especial lleno de emociones, sonrisas y recuerdos inolvidables.",
@@ -321,7 +310,6 @@ export const COMPLEMENTOS: Complemento[] = [
     descripcion:
       "Un fondo decorativo adaptado a la temática, los colores, los nombres o la identidad visual de tu evento, ideal para complementar el espacio fotográfico.",
     imagen: "/images/nova-btl/complementarios-6.jpg",
-     imagenDetalle: "/images/nova-btl/complementarios.jpg",
     detalle: [
       "¡El escenario perfecto para fotografías que robarán todas las miradas!",
 "Creamos fondos decorativos que transforman tu espacio fotográfico en un rincón único, elegante y lleno de personalidad. Adaptamos cada diseño a la temática, los colores, los nombres y la identidad visual de tu evento, logrando una presentación armoniosa que destaca en cada fotografía.",

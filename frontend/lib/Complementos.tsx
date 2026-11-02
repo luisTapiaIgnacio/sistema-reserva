@@ -66,7 +66,7 @@ export const COMPLEMENTOS: Complemento[] = [
     titulo: "Personalización de Merchandising",
     descripcion:
       "Artículos personalizados con nombres, logotipos, fechas o diseños especiales para tus invitados, clientes o colaboradores. Una alternativa ideal para celebraciones sociales y eventos corporativos.",
-    imagen: "/images/nova-btl/complementarios-3.jpg",
+    imagen: "/images/complemento-img/merchandising.png",
     detalle: [
       "Los Souvenirs Corporativos de MIRANDA EVENTS son una excelente herramienta para reforzar el posicionamiento de tu marca y agradecer la participación de clientes, colaboradores e invitados en eventos empresariales, ferias, congresos, activaciones BTL y lanzamientos de productos.",
 
@@ -147,7 +147,7 @@ export const COMPLEMENTOS: Complemento[] = [
     titulo: "Guía Pre-Evento",
     descripcion:
       "Orientación y coordinación previa para organizar los detalles del servicio, planificar la instalación y preparar la experiencia para el día de tu evento.",
-    imagen: "/images/nova-btl/complementarios-6.jpg",
+    imagen: "/images/complemento-img/guia-pre-evento.png",
     detalle: [
       "¡Cada gran experiencia comienza con una buena planificación!",
 "En MIRANDA EVENTS, te acompañamos desde el primer momento para que cada detalle de nuestro servicio esté organizado y listo para sorprender en tu evento. Brindamos orientación y coordinación previa para conocer tus necesidades, definir los detalles del servicio, planificar la instalación y preparar una experiencia que se adapte al estilo de tu celebración.",
@@ -230,7 +230,7 @@ export const COMPLEMENTOS: Complemento[] = [
     titulo: "Libro de Recuerdos",
     descripcion:
       "Un complemento para reunir fotografías, dedicatorias y mensajes de los invitados, creando un recuerdo especial de la celebración.",
-    imagen: "/images/nova-btl/complementarios-3.jpg",
+    imagen: "/images/complemento-img/libro-de-recuerdos.png",
     detalle: [
       "El Libro de Recuerdos es el complemento perfecto para bodas, cumpleaños, aniversarios, quinceañeros y todo tipo de celebraciones especiales. Permite reunir fotografías, dedicatorias, mensajes y palabras llenas de cariño de tus invitados, creando un recuerdo único que podrás conservar y revivir con el paso del tiempo.",
 "En MIRANDA EVENTS, transformamos los pequeños detalles en grandes recuerdos, ofreciéndote una forma especial de conservar las emociones, sonrisas y buenos deseos de las personas que comparten contigo ese día tan importante.",
@@ -283,7 +283,7 @@ export const COMPLEMENTOS: Complemento[] = [
     titulo: "Fotos Instantáneas",
     descripcion:
       "Fotografías impresas al momento para que tus invitados puedan llevarse un recuerdo físico de la celebración y conservar esos momentos especiales.",
-    imagen: "/images/nova-btl/complementarios-5.jpg",
+    imagen: "/images/complemento-img/fotos-instantaneas.png",
     detalle: [
       "¡Captura la magia del momento y llévate un recuerdo que puedas tocar, compartir y conservar para siempre!",
       "En MIRANDA EVENTS, hacemos que los mejores momentos de tu celebración se conviertan en recuerdos tangibles. Nuestro servicio de Fotos Instantáneas permite capturar e imprimir fotografías al momento, para que tus invitados se lleven a casa un detalle especial lleno de emociones, sonrisas y recuerdos inolvidables.",
@@ -309,7 +309,7 @@ export const COMPLEMENTOS: Complemento[] = [
     titulo: "Fondos Personalizados",
     descripcion:
       "Un fondo decorativo adaptado a la temática, los colores, los nombres o la identidad visual de tu evento, ideal para complementar el espacio fotográfico.",
-    imagen: "/images/nova-btl/complementarios-6.jpg",
+    imagen: "/images/complemento-img/fondos-personalizados.png",
     detalle: [
       "¡El escenario perfecto para fotografías que robarán todas las miradas!",
 "Creamos fondos decorativos que transforman tu espacio fotográfico en un rincón único, elegante y lleno de personalidad. Adaptamos cada diseño a la temática, los colores, los nombres y la identidad visual de tu evento, logrando una presentación armoniosa que destaca en cada fotografía.",

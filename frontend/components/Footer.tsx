@@ -199,6 +199,15 @@ export default function Footer({ mostrarLlamado = true }: { mostrarLlamado?: boo
             </a>{" "}
             |{" "}
             <a
+              href="https://www.zcorp23.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-semibold text-white/80 transition-colors hover:text-[#f5c542]"
+            >
+              www.zcorp23.com
+            </a>{" "}
+            |{" "}
+            <a
               href="https://wa.me/51999002030?text=Hola,%20vi%20la%20web%20de%20Miranda%20Magic%20Mirror%20y%20quiero%20informaci%C3%B3n%20sobre%20dise%C3%B1o%20web"
               target="_blank"
               rel="noopener noreferrer"

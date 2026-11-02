@@ -8,58 +8,84 @@ const wa = (plan: string) =>
     `Hola, deseo cotizar el paquete ${plan} de Miranda Magic Mirror para mi evento`
   )}`;
 
-// 👇 Imágenes de relleno, precios y contenido: actualízalos con la información real
+// 👇 Las imágenes de Premium y VIP Diamond son de relleno: cámbialas por fotos reales
 const PLANES = [
   {
-    nombre: "Magic Experience 2H",
-    etiqueta: "Paquete esencial",
-    horas: "2 horas de servicio",
+    nombre: "Paquete Silver",
+    icono: "fa-star",
+    horas: "2 horas",
     precio: "S/ 1,000",
-    ideal: "Ideal para cumpleaños, reuniones y celebraciones íntimas.",
     img: "/images/nova-btl/celebra/magicEx.jpg",
     destacado: false,
     incluye: [
-      "Alquiler de espejo mágico interactivo.",
-      "Fotografías durante las 2 horas contratadas.",
+      "Espejo Mágico interactivo de 65 pulgadas.",
+      "Fotografías impresas.",
+      "Accesorios divertidos.",
       "Marcos fotográficos personalizados.",
-      "Accesorios, cotillón y props.",
-      "Alfombra roja y balaustres.",
-      "Iluminación LED.",
-      "Personal de asistencia.",
-      "Instalación y desmontaje.",
+      "Atención durante el servicio contratado.",
     ],
   },
   {
-    nombre: "Magic Premium 3H",
-    etiqueta: "Experiencia ampliada",
-    horas: "3 horas de servicio",
-    precio: "S/ 1,250",
-    ideal: "Ideal para bodas, quinceañeros y graduaciones.",
+    nombre: "Paquete Gold",
+    icono: "fa-gem",
+    horas: "3 horas",
+    precio: "S/ 1,350",
     img: "/images/nova-btl/celebra/magicPremi.jpg",
     destacado: true,
     incluye: [
-      "Todo lo incluido en Magic Experience 2H.",
-      "Una hora adicional de fotografías.",
-      "Diseño personalizado de marcos según la temática.",
-      "Mayor tiempo para que todos los invitados participen.",
-      "Coordinación previa de la ambientación.",
+      "Espejo Mágico interactivo de 65 pulgadas.",
+      "Fotografías impresas.",
+      "Accesorios para los invitados.",
+      "Marcos personalizados.",
+      "Experiencia fotográfica interactiva.",
     ],
   },
   {
-    nombre: "Magic Luxury 4H",
-    etiqueta: "Experiencia completa",
-    horas: "4 horas de servicio",
-    precio: "S/ 1,500",
-    ideal: "Para eventos grandes y celebraciones con una programación extensa.",
+    nombre: "Paquete Platinum",
+    icono: "fa-crown",
+    horas: "4 horas",
+    precio: "S/ 1,700",
     img: "/images/nova-btl/celebra/magicLuxu.jpg",
     destacado: false,
     incluye: [
-      "Todo lo incluido en Magic Experience 2H.",
-      "Dos horas adicionales de fotografías.",
-      "Marcos personalizados para el evento.",
-      "Accesorios y cotillón para los invitados.",
-      "Coordinación especial del espacio fotográfico.",
-      "Asistencia durante todo el servicio contratado.",
+      "Espejo Mágico interactivo de 65 pulgadas.",
+      "Fotografías impresas.",
+      "Accesorios para fotografías.",
+      "Diseños personalizados.",
+      "Experiencia interactiva con GIF, según disponibilidad.",
+    ],
+  },
+  {
+    nombre: "Paquete Premium",
+    icono: "fa-wand-magic-sparkles",
+    horas: "5 horas",
+    precio: "S/ 2,000",
+    img: "/images/nova-btl/celebra/esp_magico.jpg",
+    destacado: false,
+    incluye: [
+      "Espejo Mágico interactivo de 65 pulgadas.",
+      "Fotografías impresas.",
+      "Accesorios divertidos.",
+      "Marcos personalizados con la temática del evento.",
+      "Experiencia interactiva con GIF, según disponibilidad.",
+      "Servicio durante cinco horas.",
+    ],
+  },
+  {
+    nombre: "Paquete VIP Diamond",
+    icono: "fa-heart",
+    horas: "6 horas",
+    precio: "S/ 2,400",
+    img: "/images/nova-btl/celebra/matrimo.jpg",
+    destacado: false,
+    incluye: [
+      "Espejo Mágico interactivo de 65 pulgadas.",
+      "Fotografías impresas.",
+      "Accesorios para todos los invitados.",
+      "Diseños personalizados exclusivos.",
+      "Experiencia interactiva con GIF, según disponibilidad.",
+      "Seis horas de entretenimiento fotográfico.",
+      "Atención personalizada para tu evento.",
     ],
   },
 ];
@@ -99,9 +125,14 @@ export default function PlanesPaquetes() {
         </Reveal>
 
         {/* Planes */}
-        <div className="grid grid-cols-1 items-stretch gap-8 lg:grid-cols-3">
+        {/* 5 tarjetas centradas: 1 por fila en móvil, 2 en tablet (2+2+1), 3 en escritorio (3+2) */}
+        <div className="flex flex-wrap items-stretch justify-center gap-8">
           {PLANES.map((plan, i) => (
-            <Reveal key={plan.nombre} delay={i * 150} className="h-full">
+            <Reveal
+              key={plan.nombre}
+              delay={(i % 3) * 150}
+              className="w-full max-w-md md:w-[calc((100%-2rem)/2)] md:max-w-none lg:w-[calc((100%-4rem)/3)]"
+            >
               <article
                 className={`
                   group relative flex h-full flex-col rounded-3xl bg-white
@@ -127,7 +158,7 @@ export default function PlanesPaquetes() {
                     src={plan.img}
                     alt={plan.nombre}
                     fill
-                    sizes="(max-width: 1024px) 100vw, 33vw"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                   />
                 </div>
@@ -140,7 +171,8 @@ export default function PlanesPaquetes() {
 
                   <div className="mt-3 flex flex-wrap gap-2">
                     <span className="rounded-full bg-[#e3ecff] px-3 py-1 text-xs font-semibold text-[#09217d]">
-                      {plan.etiqueta}
+                      <i className={`fa-solid ${plan.icono} mr-1`} aria-hidden="true" />
+                      Paquete {i + 1}
                     </span>
                     <span className="rounded-full bg-[#fff3cf] px-3 py-1 text-xs font-semibold text-[#c47f0a]">
                       <i className="fa-regular fa-clock mr-1" aria-hidden="true" />
@@ -151,8 +183,6 @@ export default function PlanesPaquetes() {
                   <p className="mt-5 font-krona text-3xl text-[#02152b]">
                     {plan.precio}
                   </p>
-
-                  <p className="mt-2 text-[15px] leading-relaxed">{plan.ideal}</p>
 
                   <ul className="mt-6 flex-1 space-y-3 border-t border-slate-200/80 pt-6">
                     {plan.incluye.map((item) => (
@@ -201,6 +231,34 @@ export default function PlanesPaquetes() {
               precios pueden variar según la fecha, la ubicación y los
               requerimientos del evento. Los elementos incluidos están sujetos a
               disponibilidad y a las condiciones de la cotización.
+            </p>
+          </div>
+        </Reveal>
+
+        {/* Llamado a la acción (solo texto) */}
+        <Reveal>
+          <div className="mx-auto mt-16 max-w-3xl text-center">
+            <h3 className="font-krona text-2xl uppercase leading-tight tracking-wide text-[#192a3d]! sm:text-3xl md:text-4xl">
+              ¡Haz que tu evento sea{" "}
+              <span className="bg-gradient-to-r from-[#09217d] via-[#0054ef] to-[#c47f0a] bg-clip-text text-transparent">
+                inolvidable
+              </span>
+              !
+            </h3>
+
+            <p className="mt-6 text-base leading-relaxed sm:text-lg">
+              Servicio en Lima Metropolitana y otras ciudades del Perú, previa
+              coordinación.
+            </p>
+            <p className="mt-2 text-base font-semibold text-[#02152b] sm:text-lg">
+              Solicita tu cotización y reserva tu fecha.
+            </p>
+
+            <p className="mt-10 font-krona text-lg uppercase tracking-[0.2em] text-[#c47f0a] md:text-xl">
+              Miranda Magic Mirror
+            </p>
+            <p className="mt-2 text-sm italic md:text-base">
+              Momentos únicos, recuerdos para siempre.
             </p>
           </div>
         </Reveal>

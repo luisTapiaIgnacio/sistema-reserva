@@ -24,7 +24,8 @@ export default function ComplementoDescripcion({ complemento }: { complemento: C
             <Reveal>
               <div className="relative">
                 <div className="absolute -bottom-3 -left-3 h-full w-full rounded-3xl border border-[#f5c542]/50" />
-                <div className="relative aspect-square overflow-hidden rounded-3xl shadow-[0_24px_48px_-16px_rgba(2,21,43,0.35)]">
+                {/* Fondo azul oscuro: algunas imágenes traen zonas transparentes */}
+                <div className="relative aspect-square overflow-hidden rounded-3xl bg-[#02152b] shadow-[0_24px_48px_-16px_rgba(2,21,43,0.35)]">
                   <Image
                     src={imagenDetalle ?? imagen}
                     alt={titulo}

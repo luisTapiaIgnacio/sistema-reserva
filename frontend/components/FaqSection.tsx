@@ -3,32 +3,66 @@
 import Reveal from "@/components/Reveal";
 import { useState } from "react";
 
-// 👇 Respuestas de ejemplo: actualízalas con la información real
 const PREGUNTAS = [
+  {
+    pregunta: "¿Qué es el Espejo Mágico?",
+    respuesta:
+      "Es un espejo interactivo que permite a tus invitados tomarse fotografías divertidas e imprimir sus recuerdos durante el evento.",
+  },
+  {
+    pregunta: "¿Para qué eventos puedo contratarlo?",
+    respuesta:
+      "Para bodas, cumpleaños, quinceañeros, graduaciones, eventos corporativos y fiestas privadas.",
+  },
   {
     pregunta: "¿Cuál es el precio del alquiler?",
     respuesta:
-      "El precio depende de la fecha, la duración del servicio y la ubicación de tu evento. Escríbenos por WhatsApp y te enviaremos una cotización sin compromiso.",
+      "Contamos con paquetes desde S/ 1,000 por 2 horas de servicio. Consulta nuestras opciones disponibles.",
   },
   {
-    pregunta: "¿En qué lugares ofrecen el servicio?",
+    pregunta: "¿Las fotografías se imprimen al instante?",
     respuesta:
-      "Atendemos eventos en Lima Metropolitana y en los departamentos de todo el Perú, previa coordinación y evaluación de los costos de traslado y logística.",
+      "¡Sí! Tus invitados pueden llevarse fotografías impresas como recuerdo del evento, según el paquete contratado.",
   },
   {
-    pregunta: "¿Para qué tipos de eventos puedo contratar el espejo?",
+    pregunta: "¿Puedo personalizar las fotografías?",
     respuesta:
-      "Nuestro espejo fotográfico es ideal para bodas, quinceañeros, graduaciones, cumpleaños, bautizos y eventos corporativos.",
+      "Sí, puedes solicitar diseños personalizados con nombres, fechas, frases o logotipos.",
   },
   {
-    pregunta: "¿Cómo puedo reservar una fecha?",
+    pregunta: "¿El servicio incluye accesorios?",
     respuesta:
-      "Contáctanos por WhatsApp, indícanos la fecha, el horario y la dirección de tu evento. Verificamos la disponibilidad y te explicamos las condiciones de reserva.",
+      "Sí, contamos con accesorios divertidos como sombreros, lentes y otros complementos para las fotografías.",
   },
   {
-    pregunta: "¿Puedo solicitar una cotización personalizada?",
+    pregunta: "¿Con cuánta anticipación debo reservar?",
     respuesta:
-      "Sí. Cuéntanos los detalles de tu celebración y prepararemos una propuesta a la medida de tu evento.",
+      "Te recomendamos reservar con anticipación para asegurar la disponibilidad de tu fecha.",
+  },
+  {
+    pregunta: "¿Cómo puedo realizar una reserva?",
+    respuesta:
+      "Contáctanos por WhatsApp e indícanos la fecha, el lugar y el tipo de evento.",
+  },
+  {
+    pregunta: "¿Realizan servicios fuera de Lima?",
+    respuesta:
+      "Podemos evaluar solicitudes en otras ciudades del Perú, según disponibilidad y costos de traslado.",
+  },
+  {
+    pregunta: "¿Puedo contratar horas adicionales?",
+    respuesta:
+      "Sí, puedes consultar por horas adicionales al momento de solicitar tu cotización.",
+  },
+  {
+    pregunta: "¿El Espejo Mágico necesita electricidad?",
+    respuesta:
+      "Sí, necesita una conexión eléctrica para funcionar correctamente.",
+  },
+  {
+    pregunta: "¿Cómo puedo solicitar una cotización?",
+    respuesta:
+      "Escríbenos por WhatsApp con los datos de tu evento y te ayudaremos a elegir el paquete ideal.",
   },
 ];
 
@@ -64,7 +98,7 @@ export default function FaqSection() {
 
             return (
               // Cada pregunta entra una tras otra
-              <Reveal key={item.pregunta} delay={i * 100}>
+              <Reveal key={item.pregunta} delay={Math.min(i, 5) * 100}>
                 <div
                   className={`
                     rounded-2xl border bg-white
